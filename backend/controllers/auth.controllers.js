@@ -111,7 +111,9 @@ const verify = AsyncHandler(async (req, res, next) => {
   // find user in db
   // return user
 
-  const user = await User.findById(req.user._id).select("-password");
+  const user = await User.findById(req.user._id).select(
+    "-password -refreshToken"
+  );
   if (!user) {
     throw new ApiError(400, "user, not found");
   }

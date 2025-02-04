@@ -16,12 +16,14 @@ const getUserProfile = AsyncHandler(async (req, res) => {
 
 const createUserProfile = AsyncHandler(async (req, res) => {
   const userId = req.params.userId;
-  console.log("createUserProfile");
+  console.log("createUserProfile, user id :", userId);
+  res.send(userId);
 });
 
 const updateUserProfile = AsyncHandler(async (req, res) => {
   const userId = req.params.userId;
-  console.log("updateUserProfile");
+  console.log("updateUserProfile, user id :", userId);
+  res.send(userId);
 });
 
 export { getUserProfile, updateUserProfile, createUserProfile };
