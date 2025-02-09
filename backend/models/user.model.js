@@ -3,6 +3,7 @@ dotenv.config();
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { UserLoginType, AvailableSocialLogins } from "../constants.js";
 
 const userSchema = new Schema(
   {
@@ -26,6 +27,12 @@ const userSchema = new Schema(
     role: { type: String, enum: ["user", "admin"], default: "user" },
 
     refreshToken: { type: String },
+
+    loginType: {
+      type: String,
+      enum: AvailableSocialLogins,
+      default: UserLoginType.EMAIL_PASSWORD,
+    },
 
     isProfileSetupDone: { type: Boolean, default: false },
 

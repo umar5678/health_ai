@@ -14,7 +14,7 @@ const App = () => {
   const location = useLocation();
   console.log(auth.isLoggedIn);
   if (auth.isLoggedIn) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/dashboard/overview" />;
   }
 
   return (

@@ -46,12 +46,12 @@ const router = createBrowserRouter([
         <Dashboard />
       </Protected>
     ),
-    // children: [
-    //   { path: "/dashboard", element: <Overview /> },
-    //   { path: "/dashboard/profile", element: <Profile /> },
-    //   { path: "/dashboard/diet-plans", element: <DietPlans /> },
-    //   { path: "/dashboard/exercise-routines", element: <ExerciseRoutine /> },
-    // ],
+    children: [
+      { path: "/dashboard/overview", element: <Overview /> },
+      { path: "/dashboard/profile", element: <Profile /> },
+      { path: "/dashboard/diet-plans", element: <DietPlans /> },
+      { path: "/dashboard/exercise-routine", element: <ExerciseRoutine /> },
+    ],
   },
 ]);
 

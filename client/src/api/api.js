@@ -17,6 +17,7 @@ const interceptedApi = axios.create(baseConfig);
 interceptedApi.interceptors.request.use(
   (config) => {
     const accessToken = sessionStorage.getItem("accessToken");
+    console.log("client accesss: ", accessToken)
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

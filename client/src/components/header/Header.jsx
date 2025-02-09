@@ -4,6 +4,7 @@ import { LiaBarsSolid } from "react-icons/lia";
 import { IoMdClose } from "react-icons/io";
 import { MdNavigateNext } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
+import Logo from "../Logo";
 
 export default () => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ export default () => {
   return (
     <nav className="bg-white w-full py-3 md:text-md my-2">
       <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 md:px-8">
-        <a className="font-bold text-2xl text-gradient">Health Ai</a>
+        <Logo/>
 
         <button
           className="menu-btn md:hidden text-gray-500 hover:text-gray-800"

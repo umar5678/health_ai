@@ -1,4 +1,4 @@
-import {generalApi} from '../api/api'
+import {generalApi, interceptedApi} from '../api/api'
 
 const baseEndpoint = "/user/auth";
 
@@ -35,7 +35,7 @@ export const loginService = async (data) => {
 // Service for user logout
 export const logoutService = async () => {
   try {
-    const response = await generalApi.post(`${baseEndpoint}/logout`);
+    const response = await interceptedApi.get(`${baseEndpoint}/logout`);
 
     // Clear session storage and redirect
     sessionStorage.clear();

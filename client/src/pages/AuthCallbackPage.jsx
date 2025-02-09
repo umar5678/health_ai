@@ -20,7 +20,6 @@ const AuthCallbackPage = () => {
 
         try {
           const decodedToken = jwtDecode(accessToken);
-          console.log(decodedToken);
           setAuth((prevAuth) => ({
             ...prevAuth,
             isLoggedIn: true,
@@ -29,7 +28,7 @@ const AuthCallbackPage = () => {
             loading: false,
           }));
 
-          navigate("/dashboard"); // Redirect after successful login
+          navigate("/dashboard/overview"); // Redirect after successful login
         } catch (error) {
           console.error("Failed to decode token:", error);
           setAuth((prevAuth) => ({
