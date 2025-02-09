@@ -1,10 +1,11 @@
+import { useNavigate } from "react-router-dom";
 export const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <>
       <section id="hero" className="md:py-28 py-16 ">
-        <div className="mx-auto max-w-screen-xl mx-auto text-gray-600 gap-x-12 items-center justify-between overflow-hidden md:flex md:px-8">
+        <div className="mx-auto max-w-screen-xl text-gray-600 gap-x-12 items-center justify-between overflow-hidden md:flex md:px-8">
           <div className="flex-none space-y-5 px-4 sm:max-w-lg md:px-0 lg:max-w-xl">
-            
             <h2 className="text-4xl text-gray-800 font-extrabold md:text-5xl">
               Smash Your Health Goals with
               <span className="text-gradient"> AI-Powered</span> Personalized
@@ -18,13 +19,13 @@ export const HeroSection = () => {
             </p>
             <div className="items-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
               <a
-                href="/"
+                onClick={() => navigate("/login")}
                 className="block py-2 px-4 text-center text-white font-medium bg-indigo-600 duration-150 hover:bg-indigo-500 active:bg-indigo-700 rounded-lg shadow-lg hover:shadow-none"
               >
                 Let's get started
               </a>
               <a
-                href="javascript:void(0)"
+                onClick={() => navigate("/login")}
                 className="flex items-center justify-center gap-x-2 py-2 px-4 text-gray-700 hover:text-gray-500 font-medium duration-150 active:bg-gray-100 border rounded-lg md:inline-flex"
               >
                 Get access

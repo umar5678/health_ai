@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Footer = () => {
-    const footerNavs = [
+  const footerNavs = [
     {
       label: "Resources",
       items: [
@@ -146,9 +146,7 @@ const Footer = () => {
           ))}
         </div>
         <div className="mt-10 py-10 border-t items-center justify-between sm:flex">
-          <p className="text-gray-600">
-            © 2022 Float UI Inc. All rights reserved.
-          </p>
+          <p className="text-gray-600">© 2025. All rights reserved.</p>
           <div className="flex items-center gap-x-6 text-gray-400 mt-6">
             <a href="javascript:void()">
               <svg
@@ -229,7 +227,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>)
-}
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;
