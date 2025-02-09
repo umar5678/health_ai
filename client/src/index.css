@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* color scheme */
+
+@theme {
+  --color-blue-6: #006eff;
+  --color-blue-5: #0094ff;
+  --color-blue-1: #0095ff17;
+  --color-blue-0-5: #0787ff10;
+  --color-red-5: #ff0004;
+  --color-red-1: #ff000410;
+  --color-black-9: #1b1c1d;
+  --color-gray-9: #1e1e1e;
+  --color-gray-8: #222222;
+  --color-gray-7: #333333;
+  --color-gray-6: #464646;
+  --color-gray-5: #555555;
+  --color-gray-4: #777777;
+  --color-gray-3: #d8d8d8;
+  --color-gray-2: #dddddd;
+  --color-gray-1: #f1f1f1;
+  --color-gray-05: #f1f1f165;
+
+  --color-white: #ffffff;
+
+  --color-border-light: #e0e0e0;
+  --color-border-dark: #555555;
+
+  /* theme colors --------------background -------------- */
+
+  --color-background-light-primary: #ffffff;
+  --color-background-light-secondary: #f9f9f9;
+
+  --color-background-dark-primary: #212121;
+  --color-background-dark-secondary: #181818;
+
+  --color-text-light-primary: #1b1c1d;
+  --color-text-light-secondary: #3d3d3d;
+
+  --color-text-dark-primary-and-secondary: #ebebeb;
+  /* --text-dark-secondary: #ECECEC; */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: rgb(36, 36, 36);
+}
+
+p,
+li {
+  color: rgb(43, 43, 43);
+}
+
+/* .dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+.dark div {
+  color: rgb(212, 211, 211);
+}
+
+.dark p,
+.dark li {
+  color: rgb(207, 206, 206);
+} */
+
+body {
+  background-color: rgb(235, 235, 235);
+}
+* {
+  scroll-behavior: smooth;
+}
+
+.text-gradient {
+  background-image: linear-gradient(to right, #0034e0, #ca03a9, #d10d38);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
