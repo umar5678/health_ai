@@ -9,7 +9,6 @@ const getCurrentUser = AsyncHandler(async (req, res) => {
   const user = await User.findById(userId).select("-password -refreshToken");
 
   if (!user) throw new ApiError(404, "user not found");
-  console.log(user);
   return res.status(200).json(new ApiResponse(200, { user }, "user fetched"));
 });
 

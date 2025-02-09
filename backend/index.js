@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
+import passport from "./passport/index.js";
 import cors from "cors";
 import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
@@ -21,6 +22,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(passport.initialize());
 
 // __________
 

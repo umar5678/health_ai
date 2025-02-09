@@ -36,6 +36,7 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <SignupPage />,
       },
+      { path: "/auth/callback", element: <AuthCallbackPage /> },
     ],
   },
   {

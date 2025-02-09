@@ -157,4 +157,43 @@ const refreshAccessToken = AsyncHandler(async (req, res) => {
   } catch (error) {}
 });
 
-export { register, login, logout, verify, refreshAccessToken };
+
+const handleSocialLogin = AsyncHandler(async (req, res) => {
+  const user = await User.findById(req.user?._id);
+  if (!user) throw new ApiError(404, "user not found");
+
+  // console.log(user)
+
+  const { accessToken, refreshToken } = await getAccessAndRefreshTokens(
+    user._id
+  );
+
+  // // Encode user data safely for URL
+  // const userData = encodeURIComponent(
+  //   JSON.stringify({
+  //     userId: user._id,
+  //     name: user.fullName,
+  //     email: user.email,
+  //   })
+  // );
+
+  return res
+    .status(301)
+    .cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    }) // Set refresh token in cookie
+    .redirect(
+      `${process.env.CLIENT_SSO_REDIRECT_URL}?accessToken=${accessToken}`
+    );
+});
+
+export {
+  register,
+  login,
+  logout,
+  verify,
+  refreshAccessToken,
+  handleSocialLogin,
+};
