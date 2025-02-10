@@ -3,50 +3,50 @@ import React, { forwardRef } from "react";
 const Button = forwardRef(
   (
     {
-      className = "",
       variant = "default",
       size = "default",
-      type="button",
+      type = "button",
       disabled = false,
+      className = "",
       ...props
     },
     ref
   ) => {
     const baseClasses =
-      "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 font-semibold";
-
-    const disabledClasses = "opacity-50 cursor-not-allowed";
+      "inline-flex items-center justify-center gap-2 rounded-md font-semibold transition focus:outline-none focus:ring-2 disabled:opacity-50 disabled:pointer-events-none";
 
     const variantClasses = {
-      'default':
-        "text-text-light-pri dark:text-white bg-gray-1 hover:bg-gray-2 dark:bg-gray-6 hover:dark:bg-gray-5",
-      'primary':
-        "text-white bg-blue-5 hover:bg-blue-6",
-      'primary-outline':
-            "text-blue-5 bg-blue-1 border border-blue-5 hover:bg-blue-05",
-      'default-outline': "border border-gray-5 dark:border-gray-3 text-gray-6 dark:text-gray-3  hover:bg-gray-1 dark:hover:bg-gray-6",
-      'secondary': "bg-orange-500 text-white hover:bg-orange-600",
-      'destructive': "bg-red-1 text-red-5 border border-red-5 hover:bg-red-5 hover:text-white",
-   
-      'ghost': "bg-transparent text-gray-9 dark:text-gray-1 hover:bg-gray-1  dark:hover:bg-gray-5",
-      'link': "text-blue-5 underline hover:text-blue-6",
+      default:
+        "bg-indigo-600 text-white hover:bg-indigo-500 focus:ring-indigo-300",
+      primary: "bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-300",
+      "primary-outline":
+        "border border-blue-500 text-blue-500 bg-blue-100 hover:bg-blue-200 focus:ring-blue-300",
+      "default-outline":
+        "border border-gray-500 text-gray-600 hover:bg-gray-100 focus:ring-gray-300",
+      secondary:
+        "bg-orange-500 text-white hover:bg-orange-600 focus:ring-orange-300",
+      destructive:
+        "bg-red-500 text-white border border-red-600 hover:bg-red-600 focus:ring-red-300",
+      "destructive-outline":
+        "bg-red-500/10 text-red-500 hover:text-white border border-red-600 hover:bg-red-600 focus:ring-red-300",
+      ghost:
+        "bg-transparent text-gray-900 hover:bg-gray-100 focus:ring-gray-300",
+      link: "text-blue-500 underline hover:text-blue-600 focus:ring-blue-300",
     };
 
     const sizeClasses = {
-      default: "h-9 px-4 py-2",
-      sm: "h-8 px-3 py-2 rounded-md px-3 text-xs",
-      lg: "h-10 text-base rounded-md px-8",
-      icon: "h-9 w-9",
+      default: "px-4 py-2 text-sm",
+      sm: "px-3 py-1 text-xs",
+      lg: "px-6 py-3 text-lg",
+      icon: "p-2",
     };
 
     return (
       <button
-        className={`${baseClasses} ${variantClasses[variant]} ${
-          sizeClasses[size]
-        } ${disabled ? disabledClasses : ""} ${className}`}
+        type={type}
         ref={ref}
         disabled={disabled}
-      type={type}
+        className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
         {...props}
       />
     );

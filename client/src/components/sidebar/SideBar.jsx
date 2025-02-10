@@ -55,7 +55,7 @@ const SideBar = ({ toggleSidebar }) => {
         </ul>
       </div>
       <div className="pb-16">
-        <Button onClick={handleLogout} variant="destructive">
+        <Button onClick={handleLogout} variant="destructive-outline">
           Logout
         </Button>
       </div>

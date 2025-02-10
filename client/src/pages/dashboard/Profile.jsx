@@ -1,16 +1,30 @@
-import React from 'react'
+import React, { useCallback, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { UserProfile, ProfileForm } from "../../components";
 
 const Profile = () => {
+  const { auth } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleEditComplete = () => {
+    setIsEditing(false);
+  };
+
   return (
     <div>
-      Profile
-      <h1>display user profile here</h1>
-      <p>if uer has not set up profile , ask user to first set it up</p>
-      it can be simple form page, not a Modal
-      <br />
-      there will be differen setups fo rrendering profile and edit and create profile
+      {isEditing || !auth.userData?.isProfileSetupDone ? (
+        <ProfileForm onEditComplete={handleEditComplete} />
+      ) : (
+        <>
+          <UserProfile user={auth.userData} onEditClick={handleEditClick} />
+        </>
+      )}
     </div>
   );
-}
+};
 
-export default Profile
+export default Profile;

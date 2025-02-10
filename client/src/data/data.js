@@ -1,4 +1,4 @@
-export const faqsList = [
+const faqsList = [
   {
     q: "How does the food image analysis work?",
     a: "The app uses AI-powered image recognition technology to analyze the uploaded food images. Our system attempts to identify the food items in the image and estimate their calorie and nutrient content. However, the accuracy may vary depending on factors like image quality, lighting, and the complexity of the dish.",
@@ -29,7 +29,7 @@ export const faqsList = [
   },
 ];
 
-export const testimonialsData = [
+const testimonialsData = [
   {
     avatar: "https://api.uifaces.co/our-content/donated/xZ4wg2Xj.jpg",
     name: "John Doe",
@@ -59,3 +59,113 @@ export const testimonialsData = [
       "I'm busy, but this app makes it easy to stay on top of my health goals. The AI-powered features are a real time-saver, and I appreciate the personalized recommendations.",
   },
 ];
+
+const countries = [
+  { value: "afghanistan", label: "Afghanistan" },
+  { value: "argentina", label: "Argentina" },
+  { value: "australia", label: "Australia" },
+  { value: "brazil", label: "Brazil" },
+  { value: "canada", label: "Canada" },
+  { value: "china", label: "China" },
+  { value: "egypt", label: "Egypt" },
+  { value: "france", label: "France" },
+  { value: "germany", label: "Germany" },
+  { value: "india", label: "India" },
+  { value: "indonesia", label: "Indonesia" },
+  { value: "iran", label: "Iran" },
+  { value: "italy", label: "Italy" },
+  { value: "japan", label: "Japan" },
+  { value: "mexico", label: "Mexico" },
+  { value: "netherlands", label: "Netherlands" },
+  { value: "new-zealand", label: "New Zealand" },
+  { value: "nigeria", label: "Nigeria" },
+  { value: "pakistan", label: "Pakistan" }, // 🇵🇰 Included Pakistan
+  { value: "philippines", label: "Philippines" },
+  { value: "russia", label: "Russia" },
+  { value: "saudi-arabia", label: "Saudi Arabia" },
+  { value: "south-africa", label: "South Africa" },
+  { value: "south-korea", label: "South Korea" },
+  { value: "spain", label: "Spain" },
+  { value: "sweden", label: "Sweden" },
+  { value: "switzerland", label: "Switzerland" },
+  { value: "turkey", label: "Turkey" },
+  { value: "uae", label: "United Arab Emirates" },
+  { value: "uk", label: "United Kingdom" },
+  { value: "usa", label: "United States" },
+  { value: "vietnam", label: "Vietnam" },
+];
+
+const interestsList = [
+  "Technology",
+  "Sports",
+  "Music",
+  "Art",
+  "Food",
+  "Travel",
+  "Fitness",
+  "Gaming",
+  "Fashion",
+  "Photography",
+  "Reading",
+  "Movies",
+  "Science",
+  "History",
+  "Business",
+  "Programming",
+];
+
+const genderOptions = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Other" },
+];
+
+const allergyEnums = [
+  "Dairy",
+  "Eggs",
+  "Wheat",
+  "Soy",
+  "Tree Nuts",
+  "Peanuts",
+  "Shellfish",
+  "Fish",
+  "Gluten",
+  "Lactose",
+  "Other",
+];
+
+const dietaryPrefEnums = [
+  "Vegetarian",
+  "Vegan",
+  "Pescatarian",
+  "Paleo",
+  "Keto",
+  "Intermittent Fasting",
+  "Low-Carb",
+  "High-Protein",
+  "Gluten-Free",
+  "Lactose-Free",
+  "Other",
+];
+
+const weightGoalsEnums = ["Lose Fat", "Maintain", "Build Muscle"];
+
+const activityLevelEnums = [
+  "Sedentary",
+  "Light",
+  "Moderate",
+  "Heavy",
+  "Extreme",
+];
+
+export {
+  interestsList,
+  testimonialsData,
+  faqsList,
+  countries,
+  genderOptions,
+  weightGoalsEnums,
+  activityLevelEnums,
+  dietaryPrefEnums,
+  allergyEnums,
+};

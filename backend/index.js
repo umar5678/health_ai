@@ -29,12 +29,10 @@ app.use(passport.initialize());
 import errorHandlerMiddleware from "./middlewares/errorHandler.middleware.js";
 import { notFound } from "./middlewares/notFound.middleware.js";
 import authRouter from "./routes/auth.routes.js";
-import profileRoutes from "./routes/profile.routes.js";
 import userRouter from "./routes/user.routes.js";
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/user/auth", authRouter);
-app.use("/api/v1/user/profile", profileRoutes);
 
 app.use(errorHandlerMiddleware);
 app.use(notFound);

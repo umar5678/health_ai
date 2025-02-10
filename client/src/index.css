@@ -83,3 +83,20 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+.text-gradient-2 {
+  background-image: linear-gradient(
+    to right,
+    #0034e0,
+    #ca03a9,
+    #fe2323,
+    #ca03a9,
+    #fe2323,
+    #fe2323,
+    #fe2323,
+    #fe2323
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
