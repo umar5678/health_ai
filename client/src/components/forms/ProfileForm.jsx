@@ -25,7 +25,7 @@ import {
 
 const ProfileForm = ({ onEditComplete }) => {
   const { auth, setAuth } = useAuth();
-  const isEditing = auth?.userData?.isProfileSetupDone;
+  const isEditing = !!auth?.userData?.isProfileSetupDone;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

@@ -1,58 +1,66 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
+import { interceptedApi } from "../api/api";
 
 const AuthCallbackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { setAuth } = useAuth(); // Use setAuth to update the whole auth object
-
-  const accessToken = searchParams.get("accessToken");
+  const { setAuth } = useAuth();
 
   useEffect(() => {
     const handleAuth = async () => {
-      // Make it an async function
-      setAuth((prevAuth) => ({ ...prevAuth, loading: true, error: "" })); // Set loading
+      try {
+        const accessToken = searchParams.get("accessToken");
 
-      if (accessToken) {
-        sessionStorage.setItem("accessToken", accessToken);
-
-        try {
+        if (accessToken) {
+          sessionStorage.setItem("accessToken", accessToken);
           const decodedToken = jwtDecode(accessToken);
+
           setAuth((prevAuth) => ({
             ...prevAuth,
             isLoggedIn: true,
-            userId: decodedToken._id, // Set userId
-            userData: decodedToken, // If you have user data directly in the token
+            userId: decodedToken.sub || decodedToken._id, // Use sub or _id based on your token structure
             loading: false,
           }));
 
-          navigate("/dashboard/overview"); // Redirect after successful login
-        } catch (error) {
-          console.error("Failed to decode token:", error);
+          // Fetch user data after successful login
+          const response = await interceptedApi.get(
+            `/user/${decodedToken._id}`
+          ); // Use sub or _id
+          const receivedUser = response.data?.data?.user;
+          if (receivedUser) {
+            setAuth((prevAuth) => ({
+              ...prevAuth,
+              userData: receivedUser,
+            }));
+          }
+
+          navigate("/dashboard/overview");
+        } else {
           setAuth((prevAuth) => ({
             ...prevAuth,
             loading: false,
-            error: "Invalid token.", // Set an error message
+            isLoggedIn: false,
+            error: "No token provided.",
           }));
-          navigate("/login"); // Or redirect back to login with error
+          navigate("/login");
         }
-      } else {
+      } catch (error) {
+        console.error("Authentication error:", error);
         setAuth((prevAuth) => ({
           ...prevAuth,
           loading: false,
           isLoggedIn: false,
-          userId: null,
-          userData: null,
-          error: "No token provided.", // Set an error message
+          error: "Authentication failed. Please try again.",
         }));
-        navigate("/login"); // Redirect to login if no token
+        navigate("/login");
       }
     };
 
-    handleAuth(); // Call the async function
-  }, [searchParams, navigate, setAuth, accessToken]); // Add accessToken to the dependency array
+    handleAuth();
+  }, [searchParams, navigate, setAuth]);
 
   return <p>Processing login...</p>;
 };

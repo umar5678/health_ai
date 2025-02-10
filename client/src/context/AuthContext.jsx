@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { generalApi, interceptedApi } from "../api/api"
+import { generalApi, interceptedApi } from "../api/api";
 
 const AuthContext = createContext();
 
@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     userData: null,
   });
 
-  console.log(auth)
+  console.log(auth);
 
   useEffect(() => {
     const initializeAuthState = async () => {
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
           const newAccessToken = response.data?.data?.accessToken;
 
           if (newAccessToken) {
-            sessionStorage.setItem("accessToken", newAccessToken); 
+            sessionStorage.setItem("accessToken", newAccessToken);
             const newDecodedToken = jwtDecode(newAccessToken);
             setAuth((prevAuth) => ({
               ...prevAuth,

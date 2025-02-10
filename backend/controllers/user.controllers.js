@@ -39,14 +39,14 @@ const createUserProfile = AsyncHandler(async (req, res) => {
           gender,
           country,
           activityLevel,
-          goal, 
+          goal,
           dietaryPreferences,
           allergies,
           isProfileSetupDone: true, // Mark profile as complete
         },
       },
       { new: true, runValidators: true } // Return updated user and validate
-    ).select("-password -accessToken")
+    ).select("-password -accessToken");
 
     if (!updatedUser) {
       throw new ApiError(404, "User not found"); // Handle if user doesn't exist
