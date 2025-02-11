@@ -28,7 +28,7 @@ const DietPlans = () => {
       setError("");
       setLoading(true);
       const response = await createDietPlan(aiDietPlan, auth.userId);
-      console.log("response atfer saving", response);
+      // console.log("response atfer saving", response);
       setPlans((prev) => ({
         ...prev,
         dietPlans: aiDietPlan,
@@ -72,7 +72,9 @@ const DietPlans = () => {
         </>
       )}
 
-      <Button onClick={generateDietPlan}>Get Diet Plan</Button>
+      <Button disabled={aiDietPlan.length > 0} onClick={generateDietPlan}>
+        Get AI Generated Diet Plan
+      </Button>
 
       {aiDietPlan.length > 0 && (
         <div className="flex flex-col justify-center items-center">
@@ -80,7 +82,7 @@ const DietPlans = () => {
             Save Diet Plan
           </Button>
           <Divider />
-          <h1 className="text-2xl font-bold">Ai Generated Diet Plan</h1>
+          <h1 className="text-2xl font-bold">AI Generated Diet Plan</h1>
           <div className="">
             {aiDietPlan.map((diet, index) => (
               <div key={index} className=" mx-auto ">

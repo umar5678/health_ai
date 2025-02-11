@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Footer, Header } from "./components";
 import {
   Navigate,
@@ -12,7 +12,6 @@ import { useAuth } from "./context/AuthContext";
 const App = () => {
   const { auth } = useAuth();
   const location = useLocation();
-  console.log(auth.isLoggedIn);
   if (auth.isLoggedIn) {
     return <Navigate to="/dashboard/overview" />;
   }

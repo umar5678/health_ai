@@ -72,11 +72,11 @@ const ExerciseRoutine = () => {
         </>
       )}
 
-      <Button onClick={generateExerciseRoutine}>Get AI generaed Routine</Button>
+      <Button disabled={aiExerciseRoutine.length > 0} onClick={generateExerciseRoutine}>Get AI generaed Routine</Button>
 
       {aiExerciseRoutine.length > 0 && (
         <div className="flex flex-col justify-center items-center">
-          <Button className="ml-3" onClick={handleSaveExerciseRoutine}>
+          <Button className="ml-3 mt-4" onClick={handleSaveExerciseRoutine}>
             Save Exercise Routine
           </Button>
           <Divider />

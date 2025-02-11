@@ -19,6 +19,8 @@ import ErrorMessage from "./errors/Error";
 import BMIcalculator from "./BMIcalculator";
 import DietCard from "./cards/DietCard";
 import ExerciseCard from "./cards/ExerciseCard";
+import TodaysExerciseCard from "./cards/TodaysExerciseCard";
+import TodaysDietCard from "./cards/TodaysDietCard";
 
 export {
   Header,
@@ -42,4 +44,6 @@ export {
   BMIcalculator,
   DietCard,
   ExerciseCard,
+  TodaysExerciseCard,
+  TodaysDietCard,
 };

@@ -24,7 +24,8 @@ export const PlansProvider = ({ children }) => {
         const exerciseData = exerciseResponse.data?.data.days;
 
         const dietResponse = await getUserDietPlan(auth.userId); // Fetch diet plans
-        const dietData = dietResponse.data?.data?.days; // Adjust based on your API response
+        const dietData = dietResponse.data?.data.days; // Adjust based on your API response
+        console.log(dietData)
         setPlans((prev) => ({
           ...prev,
           exerciseRoutines: exerciseData,
@@ -38,7 +39,7 @@ export const PlansProvider = ({ children }) => {
     };
 
     if (auth.userId) {
-      if (plans.exerciseRoutines.length !== 7 || plans.dietPlans.length !== 7) {
+      if (plans.exerciseRoutines.length !== 7 || plans?.dietPlans?.length !== 7) {
         fetchPlans();
       } else {
         setPlans((prev) => ({ ...prev, loading: false }));
