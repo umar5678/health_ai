@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     userData: null,
   });
 
-  console.log(auth);
+  // console.log(auth);
 
   useEffect(() => {
     const initializeAuthState = async () => {

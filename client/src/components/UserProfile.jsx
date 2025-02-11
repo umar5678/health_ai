@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Divider } from "../components";
+import { Button, Divider, BMIcalculator } from "../components";
 import { generateUserBio } from "../utils/generateUserBio.js";
 
 const UserProfile = ({ user, onEditClick }) => {
@@ -34,6 +34,15 @@ const UserProfile = ({ user, onEditClick }) => {
           <p>{bio}</p>
         </>
       )}
+
+      <Divider />
+
+      <BMIcalculator
+        height={user?.height}
+        weight={user?.weight}
+        age={user?.age}
+        gender={user?.gender}
+      />
 
       <Divider />
 

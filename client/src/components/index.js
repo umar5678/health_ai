@@ -16,6 +16,9 @@ import SelectOne from "./ui/SelectOne";
 import LoadingScreen from "./loaders/LoadingScreen";
 import UserProfile from "./UserProfile";
 import ErrorMessage from "./errors/Error";
+import BMIcalculator from "./BMIcalculator";
+import DietCard from "./cards/DietCard";
+import ExerciseCard from "./cards/ExerciseCard";
 
 export {
   Header,
@@ -36,4 +39,7 @@ export {
   LoadingScreen,
   UserProfile,
   ErrorMessage,
+  BMIcalculator,
+  DietCard,
+  ExerciseCard,
 };

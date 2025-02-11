@@ -18,6 +18,7 @@ import {
 } from "./pages";
 import Protected from "./components/Protected.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { PlansProvider } from "./context/PlansContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +44,9 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <Protected>
-        <Dashboard />
+        <PlansProvider>
+          <Dashboard />
+        </PlansProvider>
       </Protected>
     ),
     children: [

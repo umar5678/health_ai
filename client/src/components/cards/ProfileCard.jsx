@@ -1,7 +1,6 @@
 import React from "react";
 
 const ProfileCard = ({ user }) => {
-  console.log(user);
   if (!user) return <h1>No data available</h1>;
   return (
     <div className="max-w-sm mx-auto bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-200">

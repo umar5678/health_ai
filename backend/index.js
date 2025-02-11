@@ -30,9 +30,13 @@ import errorHandlerMiddleware from "./middlewares/errorHandler.middleware.js";
 import { notFound } from "./middlewares/notFound.middleware.js";
 import authRouter from "./routes/auth.routes.js";
 import userRouter from "./routes/user.routes.js";
+import exerciseRouter from "./routes/exercise.routes.js";
+import dietRouter from "./routes/diet.routes.js";
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/user/auth", authRouter);
+app.use("/api/v1/user/exercise", exerciseRouter);
+app.use("/api/v1/user/diet", dietRouter);
 
 app.use(errorHandlerMiddleware);
 app.use(notFound);

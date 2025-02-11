@@ -1,15 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { useAuth } from "../../context/AuthContext";
-import { ProfileCard } from "../../components";
+import { ProfileCard, BMIcalculator } from "../../components";
 import { Navigate, useLocation } from "react-router-dom";
 
 const Overview = () => {
   const { auth } = useAuth();
 
   const location = useLocation();
-
-  console.log(auth.userData);
 
   if (!auth.userData?.isProfileSetupDone) {
     return (
@@ -18,11 +16,14 @@ const Overview = () => {
   }
   return (
     <div>
-      Overview
-      <h1>display here users current body weight</h1>
       <ProfileCard user={auth.userData} />
-      <h1>small profile card</h1>
-      <h1>BMI</h1>
+
+      <BMIcalculator
+        height={auth.userData?.height}
+        weight={auth.userData?.weight}
+        age={auth.userData?.age}
+        gender={auth.userData?.gender}
+      />
       <h1>
         Today's diet plan ser can see full plan in Modal or something else
       </h1>

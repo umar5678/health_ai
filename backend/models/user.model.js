@@ -33,16 +33,27 @@ const userSchema = new Schema(
       enum: AvailableSocialLogins,
       default: UserLoginType.EMAIL_PASSWORD,
     },
-    isProfileSetupDone: { type: Boolean, default: false },
+    exerciseRoutines: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ExerciseRoutine",
+      },
+    ],
+    dietPlans: [
+      {
+        // New field for diet plans
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "DietPlan",
+      },
+    ],
 
-    // Embedded Profile Information (merged)
+    isProfileSetupDone: { type: Boolean, default: false },
     height: { type: Number },
     weight: { type: Number },
     age: { type: Number },
     gender: { type: String, enum: ["male", "female", "other"] },
     country: { type: String },
-    dietPlan: { type: String }, // Consider renaming to currentDietPlan if you'll store multiple plans
-    exerciseRoutine: { type: String }, // Consider renaming to currentExerciseRoutine
+    dietPlan: { type: String },
     dietaryPreferences: [{ type: String, enum: dietaryPrefEnums }],
     allergies: [{ type: String, enum: allergyEnums }],
     activityLevel: { type: String, enum: activityLevelEnums },

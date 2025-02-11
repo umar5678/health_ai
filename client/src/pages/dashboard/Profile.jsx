@@ -14,8 +14,6 @@ const Profile = () => {
     setIsEditing(false);
   };
 
-  console.log("edit:  : ", isEditing )
-
   return (
     <div>
       {isEditing || !auth.userData?.isProfileSetupDone ? (
