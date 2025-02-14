@@ -1,23 +1,23 @@
 import axios from "axios";
+import { getToken, setToken, clearToken } from "../utils/tokenUtils";
 
-// Create a common base configuration
+// Common API config
 const baseConfig = {
   baseURL: import.meta.env.VITE_SERVER_URI,
   withCredentials: true,
   timeout: 120000,
 };
 
-// General API client
+// General API client (No interceptors)
 const generalApi = axios.create(baseConfig);
 
-// Intercepted API client
+// Intercepted API client (For authenticated requests)
 const interceptedApi = axios.create(baseConfig);
 
-// Request interceptor to attach accessToken to headers
+// Request Interceptor: Attach accessToken
 interceptedApi.interceptors.request.use(
   (config) => {
-    const accessToken = sessionStorage.getItem("accessToken");
-  
+    const accessToken = getToken();
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -26,28 +26,32 @@ interceptedApi.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle 401 errors
+// Response Interceptor: Handle 401 & Refresh Token
 interceptedApi.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Handle token refresh logic
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
+
       try {
-        console.log("Attempting to refresh token");
+        console.log("Refreshing token...");
 
-        // Call the refresh-token endpoint
-        const { data } = await generalApi.post("/user/refresh-token");
+        // Refresh token request
+        const { data } = await generalApi.post("/user/auth/refresh-token");
 
-        if (data?.data?.accessToken) {
+        if (data && data.data && data.data.accessToken) {
           const newAccessToken = data.data.accessToken;
 
-          // Store the new accessToken in sessionStorage
-          sessionStorage.setItem("accessToken", newAccessToken);
+          // Store new token
+          setToken(newAccessToken, data.data.expiry);
 
-          // Update the Authorization header for the original request
+          // Update request headers
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
           // Retry the original request
@@ -55,13 +59,11 @@ interceptedApi.interceptors.response.use(
         }
       } catch (refreshError) {
         console.error(
-          "Token refresh failed, redirecting to login",
+          "Token refresh failed. Redirecting to login...",
           refreshError
         );
-
-        // Optional: Redirect user to login page
-        window.location.href = "/login";
-
+        clearToken();
+        window.location.href = "/login"; // Redirect user to login page
         return Promise.reject(refreshError);
       }
     }

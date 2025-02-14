@@ -157,7 +157,6 @@ const refreshAccessToken = AsyncHandler(async (req, res) => {
   } catch (error) {}
 });
 
-
 const handleSocialLogin = AsyncHandler(async (req, res) => {
   const user = await User.findById(req.user?._id);
   if (!user) throw new ApiError(404, "user not found");

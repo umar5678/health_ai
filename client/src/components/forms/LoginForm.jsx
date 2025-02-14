@@ -4,8 +4,9 @@ import { useForm } from "react-hook-form";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import OAuth from "../OAuth";
-import { loginService } from "../../services/authServices";
 import { useAuth } from "../../context/AuthContext";
+import AuthService from "../../services/authServices";
+import ApiError from "../../api/ApiError";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -19,41 +20,16 @@ const LoginForm = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const login = async (data) => {
+  const handleLogin = async (data) => {
     setError("");
-    setLoading(true);
 
-    try {
-      const response = await loginService(data); // Call login service
-      const { accessToken, user } = response.data?.data || {};
+    const response = await AuthService.login(data.email, data.password);
 
-      if (accessToken) {
-        // Store token in sessionStorage
-        sessionStorage.setItem("accessToken", accessToken);
-
-        // Update AuthContext
-        setAuth({
-          isLoggedIn: true,
-          userId: user?._id,
-          userData: user,
-          loading: false,
-          error: "",
-        });
-
-        // Redirect to dashboard
-        navigate("/dashboard");
-      } else {
-        throw new Error("Invalid response from server.");
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || err?.message || "Login Error");
-      setAuth((prevAuth) => ({
-        ...prevAuth,
-        isLoggedIn: false,
-        loading: false,
-      }));
-    } finally {
-      setLoading(false);
+    if (response instanceof ApiError) {
+      setError(response.errorResponse?.message || response.errorMessage);
+    } else {
+      console.log("user recieved in component :", response.data.user);
+      console.log("token recieved in component :", response.data.accessToken);
     }
   };
 
@@ -67,7 +43,7 @@ const LoginForm = () => {
       {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
 
       <div>
-        <form onSubmit={handleSubmit(login)} className="mt-8">
+        <form onSubmit={handleSubmit(handleLogin)} className="mt-8">
           <div className="space-y-5">
             {/* Email Input */}
             <Input

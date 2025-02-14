@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../Logo";
 import Button from "../ui/Button";
-import { logoutService } from "../../services/authServices";
-import LoadingScreen from "../loaders/LoadingScreen";
 
 const SideBar = ({ toggleSidebar }) => {
   const sideNavLinks = [
@@ -14,7 +12,7 @@ const SideBar = ({ toggleSidebar }) => {
   ];
 
   const handleLogout = async () => {
-    logoutService();
+    // logoutService();
   };
 
   return (

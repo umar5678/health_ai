@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import OAuth from "../OAuth";
-import { signupService } from "../../services/authServices";
+import AuthService from "../../services/authServices";
+import ApiError from "../../api/ApiError";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -17,21 +18,19 @@ const SignupForm = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const signup = async (data) => {
-    setError("");
-    setLoading(true);
-    signupService(data)
-      .then((res) => {
-        setLoading(false);
-        navigate("/login");
-      })
-      .catch((err) => {
-        setError(err.response?.data?.message || "Signup Error");
-        loading(false);
-      });
+  const handleSignup = async (data) => {
+    setError("")
+    const response = await AuthService.register(data.fullName, data.email, data.password);
 
-    console.log("Signup Data:", data); // Logs the form data
+       if (response instanceof ApiError) {
+      setError(response.errorResponse?.message || response.errorMessage);
+    } else {
+      console.log("user recieved in component :", response.data);
+    }
   };
+
+
+  
 
   return (
     <div>
@@ -44,7 +43,7 @@ const SignupForm = () => {
       {error && <p className="text-red-600 mt-10 text-center">{error}</p>}
 
       <div>
-        <form onSubmit={handleSubmit(signup)} className="mt-8">
+        <form onSubmit={handleSubmit(handleSignup)} className="mt-8">
           <div className="space-y-5">
             {/* Full Name */}
             <Input

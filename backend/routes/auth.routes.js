@@ -19,7 +19,10 @@ router.route("/logout").get(verifyToken, logout);
 router.route("/verify").get(verifyToken, verify);
 router.route("/refresh-token").post(refreshAccessToken);
 
-
+// router.route("/change-password").post(verifyToken, changePassword)
+// router.route("/forgot-passward").post(forgotPassword)
+// router.route("/rest-password/:token").post(verifyToken, resetPassword)
+// verify email get req
 
 router
   .route("/google")
