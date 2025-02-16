@@ -1,137 +1,192 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { jwtDecode } from "jwt-decode";
-import { generalApi, interceptedApi } from "../api/api";
+import AuthService from "../services/AuthService";
+import { clearToken, getToken, setToken } from "../utils/tokenUtils";
+import UserService from "../services/userServices";
+import { ApiError } from "../api/ApiError";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({
-    isLoggedIn: false,
-    loading: true,
-    error: "",
-    userId: null,
-    userData: null,
-  });
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
+  const [error, setError] = useState(null);
 
-  // console.log(auth);
+  // console.log("user",user)
+  // console.log("user ID",userId)
+  // console.log("error", error);
+  // console.log("token", getToken())
+  //  user state does not persist with page refresh, but accessToken in session storage does, is only removed when user close window, or user manually delete the token
+  // when ever page refresh, token is available, so we got the userID, then based on this ID we can call get user and save the user in state
+  // other option is to user localstorage for both accessToken and user Data
 
-  useEffect(() => {
-    const initializeAuthState = async () => {
-      setAuth((prevAuth) => ({ ...prevAuth, loading: true, error: "" })); // Set loading and clear error
+  const initializeAuthState = useCallback(async () => {
+    setLoading(true);
+    setError(null);
 
-      try {
-        const token = sessionStorage.getItem("accessToken");
-
-        if (token) {
-          try {
-            const decodedToken = jwtDecode(token);
-            const currentTime = Date.now() / 1000;
-
-            if (decodedToken.exp > currentTime) {
-              setAuth((prevAuth) => ({
-                ...prevAuth,
-                isLoggedIn: true,
-                userId: decodedToken._id,
-                loading: false,
-              }));
-              return; // Token is valid, exit early
-            }
-          } catch (decodeError) {
-            console.error("Token decoding error:", decodeError);
-            sessionStorage.removeItem("accessToken");
-          }
-        }
-
-        // Refresh token or clear session
+    try {
+      const token = getToken();
+      if (token) {
         try {
-          const response = await generalApi.post("/user/auth/refresh-token");
-          const newAccessToken = response.data?.data?.accessToken;
-
-          if (newAccessToken) {
-            sessionStorage.setItem("accessToken", newAccessToken);
-            const newDecodedToken = jwtDecode(newAccessToken);
-            setAuth((prevAuth) => ({
-              ...prevAuth,
-              isLoggedIn: true,
-              userId: newDecodedToken._id,
-              loading: false,
-            }));
+          const decodedToken = jwtDecode(token);
+          const currentTime = Date.now() / 1000;
+          if (decodedToken.exp > currentTime) {
+            setUserId(decodedToken._id);
+            return;
           } else {
-            sessionStorage.removeItem("accessToken");
-            setAuth((prevAuth) => ({
-              ...prevAuth,
-              isLoggedIn: false,
-              userId: null,
-              error: "Session expired. Please log in again.",
-              loading: false,
-            }));
+            clearToken();
           }
-        } catch (refreshError) {
-          console.error("Error refreshing token:", refreshError);
-          sessionStorage.removeItem("accessToken");
-          setAuth((prevAuth) => ({
-            ...prevAuth,
-            isLoggedIn: false,
-            userId: null,
-            error: "Session expired. Please log in again.",
-            loading: false,
-          }));
+        } catch (decodeError) {
+          console.error("Token decoding error:", decodeError);
+          clearToken();
         }
-      } catch (overallError) {
-        console.error("Overall auth initialization error:", overallError);
-        sessionStorage.removeItem("accessToken");
-        setAuth((prevAuth) => ({
-          ...prevAuth,
-          isLoggedIn: false,
-          userId: null,
-          error: "An unexpected error occurred. Please try again.",
-          loading: false,
-        }));
       }
-    };
 
-    initializeAuthState();
+      // Try refreshing the token
+      const response = await AuthService.refreshAccessToken();
+      if (response instanceof ApiError) {
+        console.error("Refresh token error:", response.errorMessage);
+        setError(response.errorMessage);
+      } else {
+        setUserId(response.data.user._id);
+        setUser(response.data.user);
+        setToken(response.data.accessToken);
+      }
+    } catch (refreshError) {
+      console.error("Error refreshing token:", refreshError);
+      clearToken();
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    if (!auth.userId || auth.userData) return; // Only fetch if userId exists and userData is null
+    initializeAuthState();
+  }, [initializeAuthState]);
+
+  useEffect(() => {
+    if (!userId || user !== null) return;
     const getUserData = async () => {
-      setAuth((prevAuth) => ({ ...prevAuth, loading: true })); // Set loading before fetch
+      setLoading(true);
+      setError(null);
       try {
-        const response = await interceptedApi.get(`/user/${auth.userId}`); // Use userId from state
-        const receivedUser = response.data?.data?.user;
-        if (receivedUser) {
-          setAuth((prevAuth) => ({
-            ...prevAuth,
-            userData: receivedUser,
-            loading: false,
-          }));
+        const response = await UserService.getCurrentUser(userId);
+        if (response instanceof ApiError) {
+          setError(response.errorMessage);
         } else {
-          setAuth((prevAuth) => ({
-            ...prevAuth,
-            userData: null,
-            loading: false,
-          }));
+          setUser(response.data.user);
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
-        setAuth((prevAuth) => ({
-          ...prevAuth,
-          userData: null,
-          loading: false,
-          error: "Error fetching user data.",
-        }));
+        setError("Error fetching user data");
+      } finally {
+        setLoading(false);
       }
     };
-
     getUserData();
-  }, [auth.userId]);
+  }, [userId, user]);
 
-  return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const login = useCallback(async (email, password) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await AuthService.login(email, password);
+      if (res instanceof ApiError) {
+        setError(res.errorMessage);
+        return { success: false, message: res.errorMessage };
+      }
+
+      setUser(res.data.user);
+      setToken(res.data.accessToken);
+      return { success: true };
+    } catch (err) {
+      setError(err.message || "Login failed");
+      return { success: false, message: err.message || "Login failed" };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const signup = useCallback(async (fullName, email, password) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await AuthService.register(fullName, email, password);
+      if (res instanceof ApiError) {
+        setError(res.errorMessage);
+        return { success: false, message: res.errorMessage };
+      }
+      return { success: true };
+    } catch (err) {
+      setError(err.message || "Registration failed");
+      return { success: false, message: err.message || "Registration failed" };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const logout = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await AuthService.logout();
+
+      if (res instanceof ApiError) {
+        return { success: false, message: res.errorMessage };
+      } else {
+        setUser(null);
+        setUserId(null);
+        clearToken();
+      }
+    } catch (error) {
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const changePassword = useCallback(async (oldPassword, newPassword) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await AuthService.changePassword(oldPassword, newPassword);
+      if (res instanceof ApiError) {
+        setError(res.errorMessage);
+        return { success: false, message: res.errorMessage };
+      }
+      return { success: true, message: "Password changed successfully" };
+    } catch (err) {
+      setError(err.message || "Failed to change password");
+      return {
+        success: false,
+        message: err.message || "Failed to change password",
+      };
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const value = {
+    user,
+    setUser,
+    login,
+    signup,
+    logout,
+    changePassword,
+    loading,
+    userId,
+    error,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);

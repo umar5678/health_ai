@@ -47,9 +47,10 @@ interceptedApi.interceptors.response.use(
 
         if (data && data.data && data.data.accessToken) {
           const newAccessToken = data.data.accessToken;
+          console.log(data.data);
 
           // Store new token
-          setToken(newAccessToken, data.data.expiry);
+          setToken(newAccessToken);
 
           // Update request headers
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;

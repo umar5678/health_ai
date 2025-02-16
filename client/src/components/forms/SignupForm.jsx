@@ -4,8 +4,9 @@ import { useForm } from "react-hook-form";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import OAuth from "../OAuth";
-import AuthService from "../../services/authServices";
-import ApiError from "../../api/ApiError";
+import AuthService from "../../services/AuthService";
+import { ApiError } from "../../api/ApiError";
+import { useAuth } from "../../context/AuthContext";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -17,20 +18,28 @@ const SignupForm = () => {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { signup } = useAuth();
 
   const handleSignup = async (data) => {
-    setError("")
-    const response = await AuthService.register(data.fullName, data.email, data.password);
+    setError("");
+    setLoading(false);
+    const res = await signup(data.fullName, data.email, data.password);
 
-       if (response instanceof ApiError) {
+    if (res.success) {
+      setLoading(false);
+      navigate("/login");
+    } else {
+      setLoading(false);
+      setError(res.message);
+      return;
+    }
+
+    if (response instanceof ApiError) {
       setError(response.errorResponse?.message || response.errorMessage);
     } else {
-      console.log("user recieved in component :", response.data);
+      console.log("user recieved in component :", response.success);
     }
   };
-
-
-  
 
   return (
     <div>

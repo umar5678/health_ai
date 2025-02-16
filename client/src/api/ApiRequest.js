@@ -37,6 +37,20 @@ class ApiRequest {
   async patchRequest(endpoint, body, headers = {}) {
     return this.request("PATCH", endpoint, body, headers);
   }
+
+  async postFormDataRequest(endpoint, formData, headers = {}) {
+    return asyncHandler(() =>
+      interceptedApi({
+        method: "POST",
+        url: `${this.baseUrl}${endpoint}`,
+        data: formData,
+        headers: {
+          ...headers,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+    );
+  }
 }
 
-export default ApiRequest;
+export { ApiRequest };

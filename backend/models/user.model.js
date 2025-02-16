@@ -22,7 +22,7 @@ const userSchema = new Schema(
         localPath: String,
       },
       default: {
-        url: `https://via.placeholder.com/200x200.png`,
+        url: `https://upload.wikimedia.org/wikipedia/commons/5/54/Profile_photo_placeholder_-_smooth_edges.svg`,
         localPath: "",
       },
     },

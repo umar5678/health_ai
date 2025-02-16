@@ -28,9 +28,9 @@ const OAuth = () => {
           Continue with Github
         </button>
         <span className="block w-full h-px bg-gray-300"></span>
-        <p className="inline-block w-fit text-sm bg-white px-2 absolute  inset-x-0 mx-auto">
+        {/* <p className="inline-block w-fit text-sm bg-white px-2 absolute  inset-x-0 mx-auto">
           Or
-        </p>
+        </p> */}
       </div>
     </div>
   );

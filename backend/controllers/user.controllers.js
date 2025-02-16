@@ -2,9 +2,11 @@ import { User } from "../models/user.model.js";
 import { AsyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { uplaodProfileImg } from "../helpers/uploadProfileImg.js";
 
 const getCurrentUser = AsyncHandler(async (req, res) => {
   const userId = req.params.userId;
+  console.log("get user called");
 
   const user = await User.findById(userId).select("-password -refreshToken");
 
@@ -16,40 +18,66 @@ const getCurrentUser = AsyncHandler(async (req, res) => {
 
 const createUserProfile = AsyncHandler(async (req, res) => {
   const userId = req.params.userId;
-  const {
-    height,
-    weight,
-    age,
-    gender,
-    country,
-    activityLevel,
-    goal, // Corrected to weightGoals (plural)
-    dietaryPreferences,
-    allergies,
-  } = req.body;
+  const avatar = req.file; // From multer middleware
+  const body = req.body; // Other form data fields
+  console.log("user ID:", userId);
+  console.log("avatar:", avatar);
+
+  // Create an object to hold the data to update the user
+  let updateData = {};
+
+  // Handle avatar if present
+  if (avatar) {
+    console.log(avatar);
+    const uploadResult = await uplaodProfileImg(avatar);
+
+    if (uploadResult.success) {
+      console.log("upload results", uploadResult.result);
+      updateData = {
+        ...updateData,
+        avatar: { url: uploadResult.result.url, localPath: "" },
+      };
+      // updateData.avatar.url = uploadResult.result.url;
+    } else {
+      console.log(uploadResult.message);
+    }
+  }
+
+  // Iterate over each key in the request body
+  for (const key in body) {
+    let value = body[key];
+
+    // Attempt to parse the value, in case it's a JSON string representing an array
+    try {
+      const parsedValue = JSON.parse(value);
+      // If the parsed value is an array, assign it to updateData
+      if (Array.isArray(parsedValue)) {
+        updateData[key] = parsedValue;
+        continue; // Move to the next key
+      }
+    } catch (error) {
+      // If parsing fails, it means value is a regular string, so we'll just assign it as is.
+    }
+
+    updateData[key] = value;
+  }
+
+  console.log("updateData:", updateData);
+
+  // Mark profile as complete
+  updateData.isProfileSetupDone = true;
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
-        $set: {
-          height,
-          weight,
-          age,
-          gender,
-          country,
-          activityLevel,
-          goal,
-          dietaryPreferences,
-          allergies,
-          isProfileSetupDone: true, // Mark profile as complete
-        },
+        $set: updateData, // Use the updateData object
       },
-      { new: true, runValidators: true } // Return updated user and validate
-    ).select("-password -accessToken");
+      { new: true, runValidators: true }
+    ).select("-password -refreshToken");
 
     if (!updatedUser) {
-      throw new ApiError(404, "User not found"); // Handle if user doesn't exist
+      throw new ApiError(404, "User not found");
     }
 
     return res
@@ -63,10 +91,8 @@ const createUserProfile = AsyncHandler(async (req, res) => {
       );
   } catch (error) {
     if (error.name === "ValidationError") {
-      // Mongoose validation error (e.g., incorrect enum values)
       throw new ApiError(400, error.message);
     }
-    // Other errors (e.g., database errors)
     console.error("Error creating/updating profile:", error);
     throw new ApiError(500, "Failed to create/update profile");
   }
@@ -74,45 +100,69 @@ const createUserProfile = AsyncHandler(async (req, res) => {
 
 const updateUserProfile = AsyncHandler(async (req, res) => {
   const userId = req.params.userId;
-  const {
-    height,
-    weight,
-    age,
-    gender,
-    country,
-    activityLevel,
-    goal,
-    dietaryPreferences,
-    allergies,
-  } = req.body;
+  const avatar = req.file; // From multer middleware
+  const body = req.body; // Other form data fields
+
+  // Create an object to hold the data to update the user
+  let updateData = {};
+
+  // Handle avatar if present
+  if (avatar) {
+    console.log(avatar);
+    const uploadResult = await uplaodProfileImg(avatar);
+
+    if (uploadResult.success) {
+      console.log("upload results", uploadResult.result);
+      updateData = {
+        ...updateData,
+        avatar: { url: uploadResult.result.url, localPath: "" },
+      };
+      // updateData.avatar.url = uploadResult.result.url;
+    } else {
+      console.log(uploadResult.message);
+    }
+  }
+
+  // Iterate over each key in the request body
+  for (const key in body) {
+    let value = body[key];
+
+    // Attempt to parse the value, in case it's a JSON string representing an array
+    try {
+      const parsedValue = JSON.parse(value);
+      // If the parsed value is an array, assign it to updateData
+      if (Array.isArray(parsedValue)) {
+        updateData[key] = parsedValue;
+        continue; // Move to the next key
+      }
+    } catch (error) {
+      // If parsing fails, it means value is a regular string, so we'll just assign it as is.
+    }
+
+    updateData[key] = value;
+  }
+
+  console.log("updateData:", updateData);
+
+  // Mark profile as complete
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
-        $set: {
-          height,
-          weight,
-          age,
-          gender,
-          country,
-          activityLevel,
-          goal,
-          dietaryPreferences,
-          allergies,
-        },
+        $set: updateData, // Use the updateData object
       },
       { new: true, runValidators: true }
-    );
+    ).select("-password -refreshToken");
 
     if (!updatedUser) {
       throw new ApiError(404, "User not found");
     }
 
     return res
-      .status(200)
+      .status(201)
       .json(
-        new ApiResponse(200, { user: updatedUser }, "User profile updated")
+        new ApiResponse(201, { user: updatedUser }, "User profile updated")
       );
   } catch (error) {
     if (error.name === "ValidationError") {

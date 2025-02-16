@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import Button from "../ui/Button";
+import { useAuth } from "../../context/AuthContext";
 
 const SideBar = ({ toggleSidebar }) => {
   const sideNavLinks = [
@@ -11,8 +12,26 @@ const SideBar = ({ toggleSidebar }) => {
     { path: "/dashboard/exercise-routine", label: "Exercise Routine" },
   ];
 
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const handleLogout = async () => {
-    // logoutService();
+    setLoading(true);
+    setError("");
+    const res = await logout();
+    if (res.success) {
+      setError("");
+      setLoading(false);
+      navigate("/");
+      return;
+    } else {
+      setError(res.message);
+      setLoading(false);
+      return;
+    }
   };
 
   return (
@@ -53,8 +72,15 @@ const SideBar = ({ toggleSidebar }) => {
         </ul>
       </div>
       <div className="pb-16">
+        {error ? (
+          <>
+            <p>{error}</p>
+          </>
+        ) : (
+          ""
+        )}
         <Button onClick={handleLogout} variant="destructive-outline">
-          Logout
+          {loading ? "Loaging" : "Logout"}
         </Button>
       </div>
     </div>

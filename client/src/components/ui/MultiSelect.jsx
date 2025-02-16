@@ -1,7 +1,12 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
-const MultiSelect = ({ options, title = "", onChange }) => {
-  const [selectedValues, setSelectedValues] = useState([]);
+const MultiSelect = ({ options, title = "", onChange, initailValues = [] }) => {
+  const [selectedValues, setSelectedValues] = useState(initailValues);
+
+  // Update selectedValues when initailValues prop changes
+  useEffect(() => {
+    setSelectedValues(initailValues);
+  }, [initailValues]);
 
   const handleSelect = useCallback(
     (event) => {
@@ -22,15 +27,15 @@ const MultiSelect = ({ options, title = "", onChange }) => {
 
   return (
     <div className="mx-auto p-4">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+      <h2 className="text-xl font-semibold mb-2 ">{title}</h2>
       <div className="flex flex-wrap justify-center gap-3">
         {options.map((option) => (
           <label
             key={option}
-            className={`rounded-full py-2 px-6 border-2 transition-all cursor-pointer w-fit 
+            className={`rounded-full py-1 px-4 border-1 transition-all cursor-pointer w-fit 
               ${
                 selectedValues.includes(option)
-                  ? "border-purple-500 bg-purple-200/20 font-bold text-purple-600 "
+                  ? "border-purple-500 bg-purple-200/20 font-semibold text-purple-600"
                   : "border-gray-300 hover:border-gray-400"
               }`}
           >

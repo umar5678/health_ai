@@ -47,7 +47,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: rgb(36, 36, 36);
+  color: rgb(15, 15, 15);
 }
 
 /* p,
@@ -99,4 +99,12 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.uploader {
+  @apply border border-gray-300 hidden rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none  
+    file:bg-gray-200
+    file:me-2
+    
+    file:py-1 file:px-2;
 }

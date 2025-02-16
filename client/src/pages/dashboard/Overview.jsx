@@ -6,10 +6,10 @@ import {
   BMIcalculator,
   Divider,
   TodaysExerciseCard,
-  TodaysDietCard
+  TodaysDietCard,
 } from "../../components";
 import { Navigate, useLocation } from "react-router-dom";
-import { usePlans } from "../../context/PlansContext";
+// import { usePlans } from "../../context/PlansContext";
 
 const days = [
   "Sunday",
@@ -22,49 +22,51 @@ const days = [
 ];
 
 const Overview = () => {
-  const { auth } = useAuth();
-  const { plans, setPlans } = usePlans();
+  const { user } = useAuth();
+  // const { plans, setPlans } = usePlans();
 
   const dayIndex = new Date(Date.now()).getDay();
 
   const dayToday = days[dayIndex];
 
-  const TodaysExrciseRoutine = plans?.exerciseRoutines?.filter(
-    (routine) => routine.day === dayIndex
-  );
+  // const TodaysExrciseRoutine = plans?.exerciseRoutines?.filter(
+  //   (routine) => routine.day === dayIndex
+  // );
 
-  const TodaysDietPlan = plans?.dietPlans?.filter(
-    (plan) => plan.day === dayIndex
-  );
-  console.log(TodaysDietPlan[0]);
+  // const TodaysDietPlan = plans?.dietPlans?.filter(
+  //   (plan) => plan.day === dayIndex
+  // );
+  // console.log(TodaysDietPlan[0]);
 
   const location = useLocation();
 
-  if (!auth.userData?.isProfileSetupDone) {
+  console.log(user);
+
+  if (!user?.isProfileSetupDone) {
     return (
       <Navigate to="/dashboard/profile" state={{ from: location }} replace />
     );
   }
   return (
-    <div className="max-w-6xl mx-auto"> 
+    <div className="max-w-6xl mx-auto">
       <div className="w-fit mx-auto">
         <h1 className="md:text-3xl text-2xl font-bold text-gradient">
           Welcome
         </h1>
       </div>
       <p>Today is {dayToday}</p>
-      <ProfileCard user={auth.userData} />
+      <ProfileCard user={user} />
 
       <div className="mx-auto w-fit">
         <BMIcalculator
-          height={auth.userData?.height}
-          weight={auth.userData?.weight}
-          age={auth.userData?.age}
-          gender={auth.userData?.gender}
+          height={user?.height}
+          weight={user?.weight}
+          age={user?.age}
+          gender={user?.gender}
         />
       </div>
       <Divider />
-      <div className="flex flex-wrap gap-6 justify-between ">
+      {/* <div className="flex flex-wrap gap-6 justify-between ">
         <div>
           {TodaysDietPlan[0] ? (
             <>
@@ -90,9 +92,23 @@ const Overview = () => {
             </>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
 
 export default Overview;
+
+// import React from "react";
+// import { useAuth } from "../../context/AuthContext";
+
+// const Overview = () => {
+
+//   const { user } = useAuth()
+
+//   console.log("overview", user)
+
+//   return <div>Overview</div>;
+// };
+
+// export default Overview;

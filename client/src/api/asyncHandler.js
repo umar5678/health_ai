@@ -1,5 +1,5 @@
-import ApiResponse from "./ApiResponse";
-import ApiError from "./ApiError";
+import {ApiResponse} from "./ApiResponse";
+import { ApiError } from "./ApiError";
 
 export const asyncHandler = async (func) => {
   try {

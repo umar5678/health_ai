@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { UserProfile, ProfileForm } from "../../components";
 
 const Profile = () => {
-  const { auth } = useAuth();
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = () => {
@@ -16,11 +16,11 @@ const Profile = () => {
 
   return (
     <div>
-      {isEditing || !auth.userData?.isProfileSetupDone ? (
+      {isEditing || !user?.isProfileSetupDone ? (
         <ProfileForm onEditComplete={handleEditComplete} />
       ) : (
         <>
-          <UserProfile user={auth.userData} onEditClick={handleEditClick} />
+          <UserProfile user={user} onEditClick={handleEditClick} />
         </>
       )}
     </div>
@@ -28,3 +28,12 @@ const Profile = () => {
 };
 
 export default Profile;
+// //
+
+// import React from "react";
+
+// const Profile = () => {
+//   return <div>Profile</div>;
+// };
+
+// export default Profile;

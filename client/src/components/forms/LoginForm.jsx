@@ -5,12 +5,10 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 import OAuth from "../OAuth";
 import { useAuth } from "../../context/AuthContext";
-import AuthService from "../../services/authServices";
-import ApiError from "../../api/ApiError";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { setAuth } = useAuth(); // Get setAuth from AuthContext
+  const { login } = useAuth(); // Get login  from AuthContext
   const {
     register,
     handleSubmit,
@@ -22,15 +20,17 @@ const LoginForm = () => {
 
   const handleLogin = async (data) => {
     setError("");
+    setLoading(true);
 
-    const response = await AuthService.login(data.email, data.password);
+    const res = await login(data.email, data.password);
 
-    if (response instanceof ApiError) {
-      setError(response.errorResponse?.message || response.errorMessage);
+    if (!res.success) {
+      setError(res.message);
     } else {
-      console.log("user recieved in component :", response.data.user);
-      console.log("token recieved in component :", response.data.accessToken);
+      navigate("/");
     }
+
+    setLoading(false);
   };
 
   return (

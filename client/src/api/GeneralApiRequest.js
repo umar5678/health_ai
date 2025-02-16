@@ -1,7 +1,7 @@
 import { generalApi } from "./api";
 import { asyncHandler } from "./asyncHandler";
 
-class generalApiRequest {
+class GeneralApiRequest {
   constructor(baseUrl) {
     this.baseUrl = baseUrl.replace(/\/+$/, ""); // Remove trailing slashes
   }
@@ -13,7 +13,7 @@ class generalApiRequest {
     queryParams = {}
   ) {
     if (typeof endpoint !== "string") {
-      console.error("Invalid endpoint:", endpoint);
+      // console.error("Invalid endpoint:", endpoint);
       throw new Error("Endpoint must be a string.");
     }
 
@@ -35,7 +35,6 @@ class generalApiRequest {
   }
 
   async postRequest(endpoint, body = {}, headers = {}) {
-    console.log("POST Request to:", endpoint, "with body:", body);
     return this.request("POST", endpoint, body, headers);
   }
 
@@ -52,4 +51,4 @@ class generalApiRequest {
   }
 }
 
-export default generalApiRequest;
+export { GeneralApiRequest };

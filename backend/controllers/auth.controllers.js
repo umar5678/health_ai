@@ -54,7 +54,8 @@ const register = AsyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(200, createdUser, "User created Successfully"));
+    .json(new ApiResponse(200, {}, "User created Successfully")); // client will redirect user to the login page, so no need to send User object
+  // .json(new ApiResponse(200, createdUser, "User created Successfully"));
 });
 
 const login = AsyncHandler(async (req, res) => {
@@ -121,6 +122,7 @@ const verify = AsyncHandler(async (req, res, next) => {
 });
 
 const refreshAccessToken = AsyncHandler(async (req, res) => {
+  console.log("refreshAccessToken called");
   const incommingRefreshToken =
     req.cookies.refreshToken || req.body.refreshToken;
 
@@ -146,6 +148,10 @@ const refreshAccessToken = AsyncHandler(async (req, res) => {
     const { accessToken, refreshToken: newRefreshToken } =
       await getAccessAndRefreshTokens(user._id);
 
+    const updatedUser = await User.findById(user._id).select(
+      "-refreshToken -password"
+    );
+
     return res
       .status(200)
       .cookie("refreshToken", newRefreshToken, {
@@ -153,7 +159,13 @@ const refreshAccessToken = AsyncHandler(async (req, res) => {
         secure: true,
         sameSite: "lax",
       })
-      .json(new ApiResponse(200, { accessToken }, "Access token refreshed"));
+      .json(
+        new ApiResponse(
+          200,
+          { user: updatedUser, accessToken },
+          "Access token refreshed"
+        )
+      );
   } catch (error) {}
 });
 

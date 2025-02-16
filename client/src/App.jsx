@@ -10,11 +10,13 @@ import {
 import { useAuth } from "./context/AuthContext";
 
 const App = () => {
-  const { auth } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
-  if (auth.isLoggedIn) {
+  if (user) {
     return <Navigate to="/dashboard/overview" />;
   }
+
+  console.log(user)
 
   return (
     <div className="flex flex-col min-h-screen">

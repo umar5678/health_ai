@@ -3,12 +3,12 @@ import { useAuth } from "../context/AuthContext";
 import LoadingScreen from "./loaders/LoadingScreen";
 
 const Protected = ({ children }) => {
-  const { auth } = useAuth();
+  const { loading, user } = useAuth();
   const location = useLocation();
 
-  if (auth.loading) return <LoadingScreen />;
+  if (loading) return <LoadingScreen />;
 
-  if (!auth.isLoggedIn) {
+  if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

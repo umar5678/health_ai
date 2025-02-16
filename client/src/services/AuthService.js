@@ -1,7 +1,7 @@
-import ApiError from "../api/ApiError";
-import ApiRequest from "../api/generalApiRequest";
-import generalApiRequest from "../api/generalApiRequest";
-import ApiResponse from "../api/ApiResponse";
+import { ApiError } from "../api/ApiError";
+import { ApiRequest } from "../api/ApiRequest";
+import { GeneralApiRequest } from "../api/GeneralApiRequest";
+import { ApiResponse } from "../api/ApiResponse";
 
 class AuthService {
   constructor() {
@@ -19,7 +19,7 @@ class AuthService {
   }
 
   async login(email, password) {
-    const apiRequest = new generalApiRequest(`${this.USER_BASE_URL}`);
+    const apiRequest = new GeneralApiRequest(`${this.USER_BASE_URL}`);
     const response = await apiRequest.postRequest("/login", {
       email,
       password,
@@ -28,7 +28,7 @@ class AuthService {
   }
 
   async register(fullName, email, password) {
-    const apiRequest = new generalApiRequest(`${this.USER_BASE_URL}`);
+    const apiRequest = new GeneralApiRequest(`${this.USER_BASE_URL}`);
     const response = await apiRequest.postRequest("/register", {
       fullName,
       email,
@@ -39,8 +39,8 @@ class AuthService {
   }
 
   async logout() {
-    const apiRequest = new ApiRequest(`${this.USER_BASE_URL}/logout`);
-    const response = apiRequest.getRequest();
+    const apiRequest = new ApiRequest(`${this.USER_BASE_URL}`);
+    const response = apiRequest.getRequest("/logout");
     return this.handleResponse(response);
   }
 
@@ -55,7 +55,7 @@ class AuthService {
   }
 
   async forgotPassword(fields) {
-    const apiRequest = new generalApiRequest(
+    const apiRequest = new GeneralApiRequest(
       `${this.USER_BASE_URL}/forgot-password`
     );
     const response = await apiRequest.postRequest({ email: fields.email });
@@ -64,13 +64,19 @@ class AuthService {
   }
 
   async resetForgottenPassword(token, fields) {
-    const apiRequest = new generalApiRequest(
+    const apiRequest = new GeneralApiRequest(
       `${this.USER_BASE_URL}/rest-password/${token}`
     );
     const response = await apiRequest.postRequest({
       newPassword: fields.newPassword,
     });
 
+    return this.handleResponse(response);
+  }
+
+  async refreshAccessToken() {
+    const apiRequest = new GeneralApiRequest(`${this.USER_BASE_URL}`);
+    const response = await apiRequest.postRequest("/refresh-token");
     return this.handleResponse(response);
   }
 }
