@@ -20,26 +20,21 @@ const createUserProfile = AsyncHandler(async (req, res) => {
   const userId = req.params.userId;
   const avatar = req.file; // From multer middleware
   const body = req.body; // Other form data fields
-  console.log("user ID:", userId);
-  console.log("avatar:", avatar);
 
   // Create an object to hold the data to update the user
   let updateData = {};
 
   // Handle avatar if present
   if (avatar) {
-    console.log(avatar);
     const uploadResult = await uplaodProfileImg(avatar);
 
     if (uploadResult.success) {
-      console.log("upload results", uploadResult.result);
       updateData = {
         ...updateData,
         avatar: { url: uploadResult.result.url, localPath: "" },
       };
-      // updateData.avatar.url = uploadResult.result.url;
     } else {
-      console.log(uploadResult.message);
+      throw new ApiError(400, `${uploadResult.message}`);
     }
   }
 
@@ -61,8 +56,6 @@ const createUserProfile = AsyncHandler(async (req, res) => {
 
     updateData[key] = value;
   }
-
-  console.log("updateData:", updateData);
 
   // Mark profile as complete
   updateData.isProfileSetupDone = true;
@@ -108,18 +101,15 @@ const updateUserProfile = AsyncHandler(async (req, res) => {
 
   // Handle avatar if present
   if (avatar) {
-    console.log(avatar);
     const uploadResult = await uplaodProfileImg(avatar);
 
     if (uploadResult.success) {
-      console.log("upload results", uploadResult.result);
       updateData = {
         ...updateData,
         avatar: { url: uploadResult.result.url, localPath: "" },
       };
-      // updateData.avatar.url = uploadResult.result.url;
     } else {
-      console.log(uploadResult.message);
+      throw new ApiError(400, `${uploadResult.message}`);
     }
   }
 
@@ -141,10 +131,6 @@ const updateUserProfile = AsyncHandler(async (req, res) => {
 
     updateData[key] = value;
   }
-
-  console.log("updateData:", updateData);
-
-  // Mark profile as complete
 
   try {
     const updatedUser = await User.findByIdAndUpdate(

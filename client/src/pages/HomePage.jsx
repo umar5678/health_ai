@@ -7,12 +7,15 @@ import { Features } from "./homeSections/Features";
 
 const HomePage = () => {
   return (
-    <div className="container w-full mx-auto">
-      <HeroSection />
+    <div>
+
+    <HeroSection />
       <Features />
+    <div className="container w-full mx-auto">
       <Reviews />
       <Faps />
       <Contact />
+    </div>
     </div>
   );
 };

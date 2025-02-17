@@ -3,7 +3,7 @@ import Button from "../../components/ui/Button";
 import { LiaBarsSolid } from "react-icons/lia";
 import { IoMdClose } from "react-icons/io";
 import { MdNavigateNext } from "react-icons/md";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link} from "react-router-dom";
 import Logo from "../Logo";
 
 export default () => {
@@ -59,10 +59,11 @@ export default () => {
   }, [state]);
 
   return (
-    <nav className="bg-white w-full py-3 md:text-md my-2">
+    <nav className="bg-white w-full py-3 md:text-md">
       <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 md:px-8">
+        <Link to="/">
         <Logo/>
-
+        </Link>
         <button
           className="menu-btn md:hidden text-gray-500 hover:text-gray-800"
           onClick={() => setState(!state)}

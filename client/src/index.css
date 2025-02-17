@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&display=swap');
+
 @import "tailwindcss";
 
 /* color scheme */
@@ -41,14 +43,14 @@
   /* --text-dark-secondary: #ECECEC; */
 }
 
-h1,
+/* h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
   color: rgb(15, 15, 15);
-}
+} */
 
 /* p,
 li {
@@ -70,6 +72,13 @@ li {
   color: rgb(207, 206, 206);
 } */
 
+.anton-font{
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 1px;
+  font-weight: 400;
+ 
+}
+
 body {
   background-color: rgb(235, 235, 235);
 }
@@ -79,6 +88,13 @@ body {
 
 .text-gradient {
   background-image: linear-gradient(to right, #0034e0, #ca03a9, #d10d38);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-3 {
+  background-image: linear-gradient(to right, #ff00aa, #ca0303, #d10d38);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

@@ -51,13 +51,6 @@ const testimonialsData = [
     quote:
       "The app is user-friendly and makes it fun to track my food intake. The reminders are helpful, and I'm learning so much about my eating habits.",
   },
-  {
-    avatar: "https://randomuser.me/api/portraits/women/36.jpg",
-    name: "Sarah Jones",
-    title: "Business Owner",
-    quote:
-      "I'm busy, but this app makes it easy to stay on top of my health goals. The AI-powered features are a real time-saver, and I appreciate the personalized recommendations.",
-  },
 ];
 
 const countries = [

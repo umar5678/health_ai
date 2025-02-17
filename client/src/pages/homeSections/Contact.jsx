@@ -1,3 +1,4 @@
+import imgForContact from "../../images/img-contact.webp"
 export const Contact = () => {
   const servicesItems = [
     "Diet Plans",
@@ -10,10 +11,7 @@ export const Contact = () => {
   return (
     <main id="contact" className="flex overflow-hidden pb-16 mt-14">
       <div className="flex-1 hidden lg:block">
-        <img
-          src="https://images.unsplash.com/photo-1584380753601-1bfc5e0f1b99?q=80&w=1949&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          className="w-full h-screen object-cover"
-        />
+        <img src={imgForContact} className="w-full h-screen object-cover" />
       </div>
       <div className="py-12 flex-1 lg:flex lg:justify-center lg:h-screen lg:overflow-auto">
         <div className="max-w-lg flex-1 mx-auto px-4 text-gray-600">
