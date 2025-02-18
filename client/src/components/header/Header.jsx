@@ -59,7 +59,7 @@ export default () => {
   }, [state]);
 
   return (
-    <nav className="bg-white w-full py-3 md:text-md">
+    <nav className="bg-white w-full py-3 md:text-md sticky top-0 z-50 shadow-xl">
       <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 md:px-8">
         <Link to="/">
         <Logo/>
@@ -69,9 +69,9 @@ export default () => {
           onClick={() => setState(!state)}
         >
           {state ? (
-            <IoMdClose className="text-2xl" />
+            <IoMdClose className="text-2xl text-stone-900" />
           ) : (
-            <LiaBarsSolid className="text-2xl" />
+            <LiaBarsSolid className="text-2xl text-stone-900" />
           )}
         </button>
 
@@ -83,7 +83,7 @@ export default () => {
           <div className="md:flex md:items-center md:gap-8">
             <ul className="flex flex-col space-y-4 px-6 py-4 md:flex-row md:space-y-0 md:space-x-6 md:p-0">
               {navigation.map((item, idx) => (
-                <li key={idx} className="text-gray-700 hover:text-gray-900">
+                <li key={idx} className="text-stone-800 hover:text-gray-900">
                   <a
                     href={item.path}
                     onClick={(e) => {

@@ -9,7 +9,7 @@ export const Features = () => {
     <div>
       <div
         id="features"
-        className="text-center bg-black/90  flex justify-center items-center"
+        className="text-center bg-black flex justify-center items-center"
       >
         <h1 className="text-white md:text-5xl text-4xl mx-2 md:mx-0  font-semibold bold   md:max-w-lg py-24 ">
           MILLIONS OF USERS HIT THEIR GOALS. YOU'RE NEXT. 
@@ -57,7 +57,7 @@ export const Features = () => {
           {/* Second Feature Block (Reversed Layout) */}
           <div className="flex flex-wrap-reverse gap-12 lg:gap-0 items-center my-32 md:my-10">
             <motion.div
-              initial={{ opacity: 0, x: 100 }}
+              initial={{ opacity: 0, x: -100 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
               viewport={{ once: true }}
@@ -76,9 +76,9 @@ export const Features = () => {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: -100 }}
+              initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
               viewport={{ once: true }}
               className="flex-none mx-auto max-w-full sm:max-w-auto md:w-xl lg:w-2xl"
             >

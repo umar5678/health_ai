@@ -47,6 +47,13 @@ const userSchema = new Schema(
       },
     ],
 
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpire: {
+      type: Date,
+    },
+
     isProfileSetupDone: { type: Boolean, default: false },
     height: { type: Number },
     weight: { type: Number },

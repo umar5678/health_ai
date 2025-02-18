@@ -3,6 +3,8 @@ import { AsyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import { sendEmail, forgotPasswordMailgenContent } from "../utils/mail.js";
 
 const getAccessAndRefreshTokens = async (userId) => {
   const user = await User.findById(userId);
@@ -200,6 +202,69 @@ const handleSocialLogin = AsyncHandler(async (req, res) => {
     );
 });
 
+const forgetPasswordReq = AsyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) throw new ApiError(404, "User Not Found");
+
+  const token = crypto.randomBytes(32).toString("hex");
+
+  user.resetPasswordToken = token;
+  user.resetPasswordExpire = Date.now() + 3600000; // 1 hour
+
+  await user.save();
+
+  await sendEmail({
+    email: user?.email,
+    subject: "Password reset request",
+    mailgenContent: forgotPasswordMailgenContent(
+      user.username,
+      // ! NOTE: Following link should be the link of the frontend page responsible to request password reset
+      // ! Frontend will send the below token with the new password in the request body to the backend reset password endpoint
+      `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/?token=${token}`
+    ),
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Email Sent Successfully"));
+});
+
+// const handlePasswordResetTokenVerification = AsyncHandler(async (req, res) => {
+//   const { roken } = req.params
+//   const user = await User.findOne({
+//     resetPasswordToken: token,
+//     resetPasswordExpire: {$gt: Date.now()}
+
+//   })
+
+//   if (!user) throw new ApiError(400, "Invalid or Expired Token")
+
+// } )
+
+const resetForgottenPassword = AsyncHandler(async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) throw new ApiError(400, "Invalid or Expired Token");
+
+  user.password = newPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password Reset Successfully"));
+});
+
 export {
   register,
   login,
@@ -207,4 +272,6 @@ export {
   verify,
   refreshAccessToken,
   handleSocialLogin,
+  forgetPasswordReq,
+  resetForgottenPassword,
 };

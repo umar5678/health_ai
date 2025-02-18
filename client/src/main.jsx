@@ -15,6 +15,8 @@ import {
   Profile,
   DietPlans,
   ExerciseRoutine,
+  ForgetPassword,
+  ResetForgottenPassword
 } from "./pages";
 import Protected from "./components/Protected.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -37,6 +39,8 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <SignupPage />,
       },
+      { path: "/forgot-password", element: <ForgetPassword /> },
+      { path: "/reset-password", element: <ResetForgottenPassword /> },
       { path: "/auth/callback", element: <AuthCallbackPage /> },
     ],
   },
@@ -56,6 +60,7 @@ const router = createBrowserRouter([
       { path: "/dashboard/exercise-routine", element: <ExerciseRoutine /> },
     ],
   },
+  { path: "*", element: <NotFound /> },
 ]);
 
 createRoot(document.getElementById("root")).render(

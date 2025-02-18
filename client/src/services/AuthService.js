@@ -54,21 +54,19 @@ class AuthService {
     return this.handleResponse(response);
   }
 
-  async forgotPassword(fields) {
-    const apiRequest = new GeneralApiRequest(
-      `${this.USER_BASE_URL}/forgot-password`
-    );
-    const response = await apiRequest.postRequest({ email: fields.email });
+  async forgotPassword(email) {
+    const apiRequest = new GeneralApiRequest(`${this.USER_BASE_URL}`);
+    const response = await apiRequest.postRequest("/forgot-password", {
+      email,
+    });
 
     return this.handleResponse(response);
   }
 
-  async resetForgottenPassword(token, fields) {
-    const apiRequest = new GeneralApiRequest(
-      `${this.USER_BASE_URL}/rest-password/${token}`
-    );
-    const response = await apiRequest.postRequest({
-      newPassword: fields.newPassword,
+  async resetForgottenPassword(token, newPassword) {
+    const apiRequest = new GeneralApiRequest(`${this.USER_BASE_URL}`);
+    const response = await apiRequest.postRequest(`/rest-password/${token}`, {
+      newPassword,
     });
 
     return this.handleResponse(response);

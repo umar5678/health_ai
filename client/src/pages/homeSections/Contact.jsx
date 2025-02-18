@@ -49,7 +49,7 @@ export const Contact = () => {
   };
 
   return (
-    <main id="contact" className="flex overflow-hidden pb-16 mt-14">
+    <main id="contact" className="flex overflow-hidden pb-16 md:mt-14 pt-12  ">
       <Toaster position="top-center" reverseOrder={false} />
       {loading && (
         <>
@@ -63,7 +63,7 @@ export const Contact = () => {
       <div className="py-12 flex-1 lg:flex lg:justify-center lg:h-screen lg:overflow-auto">
         <div className="max-w-lg flex-1 mx-auto px-4 text-gray-600">
           <div>
-            <h3 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
+            <h3 className="text-stone-900 text-3xl font-semibold sm:text-4xl anton-font">
               Get in touch
             </h3>
             <p className="mt-3">

@@ -72,6 +72,14 @@ const LoginForm = () => {
                 required: "Password is required",
               })}
             />
+            <div className="flex justify-end">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-indigo-600 hover:underline text-right"
+              >
+                Forgot password?
+              </Link>
+            </div>
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}

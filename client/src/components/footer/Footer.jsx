@@ -46,44 +46,6 @@ const Footer = () => {
         },
       ],
     },
-    {
-      label: "Explore",
-      items: [
-        {
-          href: "javascript:void()",
-          name: "Showcase",
-        },
-        {
-          href: "javascript:void()",
-          name: "Roadmap",
-        },
-        {
-          href: "javascript:void()",
-          name: "Languages",
-        },
-        {
-          href: "javascript:void()",
-          name: "Blog",
-        },
-      ],
-    },
-    {
-      label: "Company",
-      items: [
-        {
-          href: "javascript:void()",
-          name: "Partners",
-        },
-        {
-          href: "javascript:void()",
-          name: "Team",
-        },
-        {
-          href: "javascript:void()",
-          name: "Careers",
-        },
-      ],
-    },
   ];
 
   return (

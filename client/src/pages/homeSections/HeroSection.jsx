@@ -24,7 +24,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="space-y-5 px-4 sm:max-w-lg md:px-0 lg:max-w-xl"
         >
-          <h2 className="text-3xl sm:text-4xl  text-white font-extrabold md:text-5xl leading-tight">
+          <h2 className="text-3xl sm:text-4xl  text-white font-extrabold md:text-5xl leading-tight ">
             Smash Your Health Goals with
             <span className="text-gradient-3"> AI-Powered</span> Personalized
             Plans
@@ -33,7 +33,7 @@ export const HeroSection = () => {
             Simplify your journey to a healthier lifestyle with our
             user-friendly app. Track your food intake, monitor your activity
             levels, and receive personalized insights to achieve your fitness
-            goals. Effortless tracking, empowering results.
+            goals.
           </p>
           <div className="items-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
             <motion.a
@@ -55,7 +55,6 @@ export const HeroSection = () => {
             </motion.a>
           </div>
         </motion.div>
-       
       </div>
     </section>
   );

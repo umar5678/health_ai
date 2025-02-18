@@ -1,12 +1,12 @@
 import React from "react";
-import { LoginForm } from "../components";
+import { SignupForm } from "../../components";
 
-const LoginPage = () => {
+const SignupPage = () => {
   return (
     <div className="md:max-w-lg mx-auto min-h-screen mt-16 px-2">
-      <LoginForm />
+      <SignupForm />
     </div>
   );
 };
 
-export default LoginPage;
+export default SignupPage;

@@ -2,10 +2,10 @@ import { testimonialsData } from "../../data/data";
 
 export const Reviews = () => {
   return (
-    <section id="reviews" className="py-16">
+    <section id="reviews" className="md:py-24 pt-32 ">
       <div className="max-w-screen-xl mx-auto px-4 md:px-8">
         <div className="max-w-xl sm:text-center md:mx-auto">
-          <h3 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
+          <h3 className="text-stone-900 text-3xl font-semibold sm:text-4xl anton-font max-w-sm mx-auto">
             See what others saying about us
           </h3>
           <p className="mt-3 text-gray-600">
