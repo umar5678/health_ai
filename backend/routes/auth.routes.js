@@ -12,6 +12,8 @@ import {
   handleSocialLogin,
   forgetPasswordReq,
   resetForgottenPassword,
+  verifyEmail,
+  resendEmailVerification,
 } from "../controllers/auth.controllers.js";
 import { verifyToken } from "../middlewares/auth.middleware.js";
 
@@ -20,6 +22,8 @@ router.route("/login").post(login);
 router.route("/logout").get(verifyToken, logout);
 router.route("/verify").get(verifyToken, verify);
 router.route("/refresh-token").post(refreshAccessToken);
+router.route("/verify-email/:token").get(verifyEmail);
+router.route("/resend-verification-email").post(resendEmailVerification);
 router.route("/forgot-password").post(forgetPasswordReq);
 router.route("/rest-password/:token").post(resetForgottenPassword);
 

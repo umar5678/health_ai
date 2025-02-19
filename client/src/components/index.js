@@ -21,6 +21,7 @@ import DietCard from "./cards/DietCard";
 import ExerciseCard from "./cards/ExerciseCard";
 import TodaysExerciseCard from "./cards/TodaysExerciseCard";
 import TodaysDietCard from "./cards/TodaysDietCard";
+import EmailVerificationSnackbar from "./snackbars/EmailVerificationSnacknar";
 
 export {
   Header,
@@ -46,4 +47,5 @@ export {
   ExerciseCard,
   TodaysExerciseCard,
   TodaysDietCard,
+  EmailVerificationSnackbar,
 };

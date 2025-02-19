@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import Button from "../ui/Button";
+import EmailVerificationSnackbar from "../snackbars/EmailVerificationSnacknar";
 import { useAuth } from "../../context/AuthContext";
 
 const SideBar = ({ toggleSidebar }) => {
@@ -11,6 +12,8 @@ const SideBar = ({ toggleSidebar }) => {
     { path: "/dashboard/diet-plans", label: "Diet Plans" },
     { path: "/dashboard/exercise-routine", label: "Exercise Routine" },
   ];
+
+  const {user} = useAuth()
 
   const navigate = useNavigate();
   const { logout } = useAuth();
@@ -70,7 +73,20 @@ const SideBar = ({ toggleSidebar }) => {
             </li>
           ))}
         </ul>
+        <div className="mt-16">
+        {user?.isEmailVerified ? null : (
+          <>
+            <EmailVerificationSnackbar
+              isUserEmailVerified={user?.isEmailVerified}
+              // resendVerificationEmail={resendVerificationEmail}
+            />
+          </>
+        )}
       </div>
+      </div>
+
+     
+
       <div className="pb-16">
         {error ? (
           <>

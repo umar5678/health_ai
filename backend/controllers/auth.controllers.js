@@ -4,7 +4,12 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import { sendEmail, forgotPasswordMailgenContent } from "../utils/mail.js";
+import {
+  sendEmail,
+  forgotPasswordMailgenContent,
+  emailVerificationMailgenContent,
+} from "../utils/mail.js";
+import { UserLoginType } from "../constants.js";
 
 const getAccessAndRefreshTokens = async (userId) => {
   const user = await User.findById(userId);
@@ -21,15 +26,6 @@ const getAccessAndRefreshTokens = async (userId) => {
 };
 
 const register = AsyncHandler(async (req, res) => {
-  //  get user details from req.body
-  // validate deails shoud not empty
-  // check if user already exist
-  // generate account number
-  // create user in db, (note: before saving user, model will hash the password)
-  // check if user is created or not
-  // genfrate access token
-  // send assecc token in cookie and user data in response
-
   const { fullName, email, password } = req.body;
   if ([fullName, password, email].some((v) => v?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
@@ -45,7 +41,27 @@ const register = AsyncHandler(async (req, res) => {
     password,
   });
 
-  const createdUser = await User.findById(user._id).select("-password");
+  const token = crypto.randomBytes(32).toString("hex");
+
+  user.emailVerificationToken = token;
+  user.emailVerificationExpiry = Date.now() + 3600000; // 1 hour
+
+  await user.save({ validateBeforeSave: false });
+
+  await sendEmail({
+    email: user?.email,
+    subject: "Please verify your email",
+    mailgenContent: emailVerificationMailgenContent(
+      user.username,
+      `${req.protocol}://${req.get(
+        "host"
+      )}/api/v1/user/auth/verify-email/${token}`
+    ),
+  });
+
+  const createdUser = await User.findById(user._id).select(
+    "-password -refreshToken -emailVerificationToken -emailVerificationExpiry"
+  );
 
   if (!createdUser) {
     throw new ApiError(
@@ -56,17 +72,15 @@ const register = AsyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(200, {}, "User created Successfully")); // client will redirect user to the login page, so no need to send User object
+    .json(
+      new ApiResponse(200, { user: createdUser }, "User created Successfully")
+    );
+  // client will redirect user to the login page,
+  //  or emil verification so no need to send User object
   // .json(new ApiResponse(200, createdUser, "User created Successfully"));
 });
 
 const login = AsyncHandler(async (req, res) => {
-  // get user details fron body
-  // check if user exist
-  // check if password is correct
-  // if password is correct then generate JWT Token
-  // extract password from return res of db and send it to client along with token
-
   const { email, password } = req.body;
   if ([email, password].some((v) => v?.trim() === "")) {
     throw new ApiError(400, "All field Required");
@@ -75,6 +89,19 @@ const login = AsyncHandler(async (req, res) => {
   const existedUser = await User.findOne({ email });
 
   if (!existedUser) throw new ApiError(400, "User not found");
+
+  if (existedUser.loginType !== UserLoginType.EMAIL_PASSWORD) {
+    // If user is registered with some other method, we will ask him/her to use the same method as registered.
+    // This shows that if user is registered with methods other than email password, he/she will not be able to login with password. Which makes password field redundant for the SSO
+    throw new ApiError(
+      400,
+      "You have previously registered using " +
+        existedUser.loginType?.toLowerCase() +
+        ". Please use the " +
+        existedUser.loginType?.toLowerCase() +
+        " login option to access your account."
+    );
+  }
 
   if (!(await existedUser.isPasswordCorrect(password))) {
     throw new ApiError(401, "wrong credentials");
@@ -181,15 +208,6 @@ const handleSocialLogin = AsyncHandler(async (req, res) => {
     user._id
   );
 
-  // // Encode user data safely for URL
-  // const userData = encodeURIComponent(
-  //   JSON.stringify({
-  //     userId: user._id,
-  //     name: user.fullName,
-  //     email: user.email,
-  //   })
-  // );
-
   return res
     .status(301)
     .cookie("refreshToken", refreshToken, {
@@ -202,11 +220,75 @@ const handleSocialLogin = AsyncHandler(async (req, res) => {
     );
 });
 
+const verifyEmail = AsyncHandler(async (req, res) => {
+  const { token } = req.params;
+  if (!token) {
+    throw new ApiError(400, "Invalid Token");
+  }
+  console.log(token);
+
+  const user = await User.findOne({
+    emailVerificationToken: token,
+    emailVerificationExpiry: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    throw new ApiError(400, "Invalid or Expired Token");
+  }
+  user.emailVerificationToken = undefined;
+  user.emailVerificationExpiry = undefined;
+  user.isEmailVerified = true;
+
+  await user.save();
+
+  return res
+    .status(200)
+    .redirect(`${process.env.CLIENT_EMAIL_VERIFIED_REDIRECT_URL}`)
+    .json(new ApiResponse(200, {}, "Email Verified Successfully"));
+});
+
+// This controller is called when user is logged in and he has snackbar that your email is not verified
+// In case he did not get the email or the email verification token is expired
+// he will be able to resend the token while he is logged in
+const resendEmailVerification = AsyncHandler(async (req, res) => {
+  const { userId} = req.body
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User does not exists", []);
+  }
+
+  // if email is already verified throw an error
+  if (user.isEmailVerified) {
+    throw new ApiError(409, "Email is already verified!");
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+
+  user.emailVerificationToken = token;
+  user.emailVerificationExpiry = Date.now() + 3600000; // 1 hour
+  await user.save({ validateBeforeSave: false });
+
+  await sendEmail({
+    email: user?.email,
+    subject: "Please verify your email",
+    mailgenContent: emailVerificationMailgenContent(
+      user.username,
+      `${req.protocol}://${req.get(
+        "host"
+      )}/api/v1/user/auth/verify-email/${token}`
+    ),
+  });
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Mail has been sent to your mail ID"));
+});
+
 const forgetPasswordReq = AsyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
 
-  console.log("forgor req called")
+  console.log("forgor req called");
 
   if (!user) throw new ApiError(404, "User Not Found");
 
@@ -218,8 +300,6 @@ const forgetPasswordReq = AsyncHandler(async (req, res) => {
   await user.save();
 
   await sendEmail({
-
-    
     email: user.email,
     subject: "Password reset request",
     mailgenContent: forgotPasswordMailgenContent(
@@ -234,18 +314,6 @@ const forgetPasswordReq = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, "Email Sent Successfully"));
 });
-
-// const handlePasswordResetTokenVerification = AsyncHandler(async (req, res) => {
-//   const { roken } = req.params
-//   const user = await User.findOne({
-//     resetPasswordToken: token,
-//     resetPasswordExpire: {$gt: Date.now()}
-
-//   })
-
-//   if (!user) throw new ApiError(400, "Invalid or Expired Token")
-
-// } )
 
 const resetForgottenPassword = AsyncHandler(async (req, res) => {
   const { token } = req.params;
@@ -278,4 +346,6 @@ export {
   handleSocialLogin,
   forgetPasswordReq,
   resetForgottenPassword,
+  verifyEmail,
+  resendEmailVerification,
 };

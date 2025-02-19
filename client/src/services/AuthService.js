@@ -77,6 +77,15 @@ class AuthService {
     const response = await apiRequest.postRequest("/refresh-token");
     return this.handleResponse(response);
   }
+
+  async resendEmailVerification(userId) {
+    const apiRequest = new GeneralApiRequest(`${this.USER_BASE_URL}`);
+    const response = await apiRequest.postRequest("resend-verification-email", {
+      userId,
+    });
+
+    return this.handleResponse(response);
+  }
 }
 
 export default new AuthService();
