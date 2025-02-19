@@ -50,4 +50,7 @@ export default {
 
   plugins: [],
   darkMode: "class",
+  corePlugins: {
+    preflight: false, // Or true, depending on your needs
+  },
 };

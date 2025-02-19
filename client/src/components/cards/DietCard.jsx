@@ -17,21 +17,25 @@ const DietCard = ({ dietData }) => {
   ];
 
   return (
-    <div>
-      <div className="bg-white rounded-lg shadow-md p-6 m-4 w-full md:max-w-3xl">
-        {" "}
-        {/* Card container */}
-        <h2 className="text-2xl font-bold mb-4 ">
-          {dayNames[day]}
-        </h2>{" "}
-        {/* Day name */}
+    <div className="flex min-h-full bg-white rounded-md shadow ">
+      <div className=" p-4 max-w-full md:max-w-lg">
+        <h2 className="text-lg font-bold mb-1  ">{dayNames[day]}</h2>
+        <div className="flex items-center mb-2">
+          <div className="flex-grow border-t border-gray-200"></div>
+        </div>
+
         {meals?.map((meal) => (
           <div key={meal._id} className="mb-2">
-            <h3 className="text-xl font-semibold">{meal.mealName}</h3>
+            <h3 className="font-medium text-stone-900 pb-0.5">
+              {meal.mealName}
+            </h3>
 
-            <ul className="list-disc pl-6 pb-6">
+            <ul className="list-disc pl-4">
               {meal.foodItems?.map((item, index) => (
-                <li className="" key={index}>
+                <li
+                  className="sm:w-80 font-light text-stone-800 lis"
+                  key={index}
+                >
                   {item}
                 </li>
               ))}
