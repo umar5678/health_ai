@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import OAuth from "../OAuth";
 import { useAuth } from "../../context/AuthContext";
+import { LuEyeClosed } from "react-icons/lu";
+import { FaRegEye } from "react-icons/fa";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { login } = useAuth(); // Get login  from AuthContext
+  const [showPassword, setShowPassword] = useState(false);
+
+  const { login } = useAuth();
+  useEffect(() => {
+    if (!login) {
+      navigate("/login");
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -64,14 +74,27 @@ const LoginForm = () => {
             )}
 
             {/* Password Input */}
-            <Input
-              label="Password: "
-              type="password"
-              placeholder="Enter your password"
-              {...register("password", {
-                required: "Password is required",
-              })}
-            />
+            <div>
+              <div className="flex items-end justify-end w-full relative top-7 pr-2 ">
+                {showPassword ? (
+                  <>
+                    <FaRegEye onClick={() => setShowPassword(false)} />
+                  </>
+                ) : (
+                  <>
+                    <LuEyeClosed onClick={() => setShowPassword(true)} />
+                  </>
+                )}
+              </div>
+              <Input
+                label="Password: "
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                {...register("password", {
+                  required: "Password is required",
+                })}
+              />
+            </div>
             <div className="flex justify-end">
               <Link
                 to="/forgot-password"

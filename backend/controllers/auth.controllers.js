@@ -206,6 +206,8 @@ const forgetPasswordReq = AsyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
 
+  console.log("forgor req called")
+
   if (!user) throw new ApiError(404, "User Not Found");
 
   const token = crypto.randomBytes(32).toString("hex");
@@ -216,7 +218,9 @@ const forgetPasswordReq = AsyncHandler(async (req, res) => {
   await user.save();
 
   await sendEmail({
-    email: user?.email,
+
+    
+    email: user.email,
     subject: "Password reset request",
     mailgenContent: forgotPasswordMailgenContent(
       user.username,

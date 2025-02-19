@@ -7,6 +7,8 @@ import OAuth from "../OAuth";
 import AuthService from "../../services/AuthService";
 import { ApiError } from "../../api/ApiError";
 import { useAuth } from "../../context/AuthContext";
+import { LuEyeClosed } from "react-icons/lu";
+import { FaRegEye } from "react-icons/fa";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -18,6 +20,7 @@ const SignupForm = () => {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { signup } = useAuth();
 
   const handleSignup = async (data) => {
@@ -89,18 +92,31 @@ const SignupForm = () => {
             )}
 
             {/* Password */}
-            <Input
-              label="Password: "
-              type="password"
-              placeholder="Enter your password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              })}
-            />
+            <div>
+              <div className="flex items-end justify-end w-full relative top-7 pr-2 ">
+                {showPassword ? (
+                  <>
+                    <FaRegEye onClick={() => setShowPassword(false)} />
+                  </>
+                ) : (
+                  <>
+                    <LuEyeClosed onClick={() => setShowPassword(true)} />
+                  </>
+                )}
+              </div>
+              <Input
+                label="Password: "
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
+              />
+            </div>
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}

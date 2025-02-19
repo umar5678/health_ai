@@ -1,54 +1,51 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 
-const MultiSelect = ({ options, title = "", onChange, initailValues = [] }) => {
-  const [selectedValues, setSelectedValues] = useState(initailValues);
-
-  // Update selectedValues when initailValues prop changes
-  useEffect(() => {
-    setSelectedValues(initailValues);
-  }, [initailValues]);
+const MultiSelect = ({ options, title = "", value = [], onChange }) => {
+  // value is now fully controlled by the parent
 
   const handleSelect = useCallback(
     (event) => {
-      const value = event.target.value;
-      let updatedValues = [];
+      const { value: optionValue, checked } = event.target;
+      let updatedValues;
 
-      if (event.target.checked) {
-        updatedValues = [...selectedValues, value];
+      if (checked) {
+        updatedValues = [...value, optionValue];
       } else {
-        updatedValues = selectedValues.filter((v) => v !== value);
+        updatedValues = value.filter((v) => v !== optionValue);
       }
 
-      setSelectedValues(updatedValues);
       onChange(updatedValues);
     },
-    [selectedValues, onChange]
+    [value, onChange]
   );
 
   return (
     <div className="mx-auto p-4">
-      <h2 className="text-xl font-semibold mb-2 ">{title}</h2>
-      <div className="flex flex-wrap justify-center gap-3">
-        {options.map((option) => (
-          <label
-            key={option}
-            className={`rounded-full py-1 px-4 border-1 transition-all cursor-pointer w-fit 
-              ${
-                selectedValues.includes(option)
-                  ? "border-purple-500 bg-purple-200/20 font-semibold text-purple-600"
-                  : "border-gray-300 hover:border-gray-400"
-              }`}
-          >
-            <input
-              type="checkbox"
-              value={option}
-              checked={selectedValues.includes(option)}
-              onChange={handleSelect}
-              className="hidden"
-            />
-            {option}
-          </label>
-        ))}
+      {title && <h2 className="text-xl font-semibold mb-2">{title}</h2>}
+      <div className="flex flex-wrap gap-3">
+        {options.map((option) => {
+          const isSelected = value.includes(option);
+          return (
+            <label
+              key={option}
+              className={`rounded-full py-1 px-4 border transition-all cursor-pointer w-fit 
+                ${
+                  isSelected
+                    ? "border-purple-500 bg-purple-200/20 font-semibold text-purple-600"
+                    : "border-gray-300 hover:border-gray-400"
+                }`}
+            >
+              <input
+                type="checkbox"
+                value={option}
+                checked={isSelected}
+                onChange={handleSelect}
+                className="hidden"
+              />
+              {option}
+            </label>
+          );
+        })}
       </div>
     </div>
   );

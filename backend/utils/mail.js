@@ -33,7 +33,7 @@ const sendEmail = async (options) => {
     port: 465,
     auth: {
       user: "umarfarooq567800@gmail.com",
-      pass: `${process.env.PASS}`,
+      pass: process.env.PASS,
     },
   });
 
@@ -58,6 +58,7 @@ const sendEmail = async (options) => {
 };
 
 const forgotPasswordMailgenContent = (username, passwordResetUrl) => {
+  console.log("sendEmail called,")
   return {
     body: {
       name: username,

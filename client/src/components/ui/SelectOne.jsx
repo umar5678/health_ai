@@ -8,7 +8,6 @@ const SelectOne = ({ options, title = "", onChange, initialValue = "" }) => {
     setSelectedValue(initialValue);
   }, [initialValue]);
 
-  console.log("initial values in select", selectedValue);
 
   const handleSelect = useCallback(
     (event) => {

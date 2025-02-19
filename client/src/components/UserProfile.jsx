@@ -10,7 +10,7 @@ const UserProfile = ({ user, onEditClick }) => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-4 flex-wrap ">
+      <div className="flex items-center justify-between my-4 flex-wrap ">
         <div className="flex items-center">
           <img
             src={user.avatar?.url || "/default-avatar.png"}
@@ -22,17 +22,17 @@ const UserProfile = ({ user, onEditClick }) => {
             <p className="text-gray-500">{user.email}</p>
           </div>
         </div>
-        <Button className="mt-4 sm:mt-0" onClick={onEditClick}>
+        <Button className="mt-4 sm:mt-6" onClick={onEditClick}>
           Update Profile
         </Button>
       </div>
 
       <Divider />
       {bio && (
-        <>
+        <div className="max-w-sm mx-auto">
           <h1 className="text-2xl font-semibold">Your In-App Bio</h1>
-          <p>{bio}</p>
-        </>
+          <p className="py-2">{bio}</p>
+        </div>
       )}
 
       <Divider />
@@ -48,38 +48,58 @@ const UserProfile = ({ user, onEditClick }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <h3 className="text-lg font-semibold mb-2">Personal Information</h3>
-          <ul className="list-disc list-inside">
-            <li>Height: {user.height} cm</li>
-            <li>Weight: {user.weight} kg</li>
-            <li>Age: {user.age}</li>
-            <li>Gender: {user.gender}</li>
-            <li>Country: {user.country}</li>
+          <h3 className="sm:text-xl text-lg font-semibold mb-2">
+            Personal Information
+          </h3>
+          <ul className="list-none list-inside pt-1">
+            <li>
+              {" "}
+              <strong className="pr-3">Height:</strong> {user.height} cm
+            </li>
+            <li>
+              {" "}
+              <strong className="pr-3">Weight:</strong> {user.weight} kg
+            </li>
+            <li>
+              {" "}
+              <strong className="pr-9">Age: </strong>
+              {user.age}
+            </li>
+            <li>
+              <strong className="pr-3">Gender: </strong> {user.gender}
+            </li>
+            <li>
+              <strong className="pr-2">Country: </strong> {user.country}
+            </li>
           </ul>
         </div>
 
         <div>
           <h3 className="text-lg font-semibold mb-1">Activity Level</h3>
           <ul className="list-disc list-inside mb-2">
-            <li> {user.activityLevel}</li>
+            <span> {user.activityLevel}</span>
           </ul>
 
           <h3 className="text-lg font-semibold mb-1">Health Goals</h3>
           <ul className="list-disc list-inside mb-2">
-            <li> {user.goal}</li>
+            <span> {user.goal}</span>
           </ul>
 
           <h3 className="text-lg font-semibold mb-1">Dietary Preferences</h3>
           <ul className="list-disc list-inside mb-2">
             {user.dietaryPreferences.map((pref) => (
-              <li key={pref}>{pref}</li>
+              <span className="pr-2" key={pref}>
+                {pref},
+              </span>
             ))}
           </ul>
 
           <h3 className="text-lg font-semibold mb-1">Allergies</h3>
-          <ul className="list-disc list-inside mb-2">
+          <ul className="list-disc list-inside mb-2 ">
             {user.allergies.map((allergy) => (
-              <li key={allergy}>{allergy}</li>
+              <span className="pr-2" key={allergy}>
+                {allergy},
+              </span>
             ))}
           </ul>
         </div>
