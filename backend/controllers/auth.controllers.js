@@ -253,6 +253,7 @@ const verifyEmail = AsyncHandler(async (req, res) => {
 const resendEmailVerification = AsyncHandler(async (req, res) => {
   const { userId} = req.body
   const user = await User.findById(userId);
+  console.log(userId)
 
   if (!user) {
     throw new ApiError(404, "User does not exists", []);

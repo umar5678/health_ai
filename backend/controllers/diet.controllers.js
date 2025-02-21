@@ -64,6 +64,8 @@ const getDietPlan = AsyncHandler(async (req, res) => {
 
   const dietPlan = user.dietPlans[0]; // Assuming user has only one diet plan
 
+  console.log("get diet plqn called, and this is res: ", dietPlan);
+
   return res
     .status(200)
     .json(new ApiResponse(200, dietPlan, "Diet plan retrieved successfully."));

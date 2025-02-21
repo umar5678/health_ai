@@ -10,7 +10,12 @@ const EmailVerificationSnackbar = ({ isUserEmailVerified }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const { userId } = useAuth();
+  const { user } = useAuth();
+  const [currUserId, setCurrUserId] = useState(user?._id);
+
+  useEffect(() => {
+    setCurrUserId(user?._id);
+  }, [user]);
 
   useEffect(() => {
     if (!isUserEmailVerified) {
@@ -26,10 +31,10 @@ const EmailVerificationSnackbar = ({ isUserEmailVerified }) => {
     setLoading(true);
     setError("");
     try {
-      const res = await AuthService.resendEmailVerification(userId);
+      const res = await AuthService.resendEmailVerification(currUserId);
       if (res instanceof ApiError) {
-          setError("Error resending email verification");
-          console.log(res)
+        setError("Error resending email verification");
+        console.log(res);
       } else {
         setSuccess(true);
       }
