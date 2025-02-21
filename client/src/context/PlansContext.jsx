@@ -19,16 +19,19 @@ export const PlansProvider = ({ children }) => {
       try {
         const exerciseData = await plansServices.GetExercisePlan(userId);
         const dietData = await plansServices.GetDietPlan(userId);
-
+        console.log("diet :", dietData)
+        console.log("exercise:", exerciseData)
         if (exerciseData instanceof Error || dietData instanceof Error) {
           throw new Error(
-            exerciseData.message || dietData.message || "Error fetching plans"
+            exerciseData.errorMessage ||
+              dietData.errorMessage ||
+              "Error fetching plans"
           );
         }
 
         setPlans({
           exerciseRoutines: exerciseData?.data?.days || [],
-          dietPlans: dietData?.data?.data.days || [],
+          dietPlans: dietData?.data?.data?.days || [],
           loading: false,
           error: null,
         });
@@ -51,9 +54,9 @@ export const PlansProvider = ({ children }) => {
       const response = await plansServices.CreateDietPlan(dietPlanData, userId);
       console.log(response);
       if (response instanceof Error) {
-        throw new Error(response.message || "Error creating diet plan");
+        throw new Error(response.errorMessage || "Error creating diet plan");
       }
-      const newDietPlan = response.data.data.days;
+      const newDietPlan = response.data.days;
       setPlans({
         ...plans,
         dietPlans: [...plans.dietPlans, newDietPlan], // Add the new plan
@@ -71,12 +74,16 @@ export const PlansProvider = ({ children }) => {
   const updateDietPlan = async (dietPlanData) => {
     setPlans({ ...plans, loading: true, error: null });
     try {
-      const response = await plansServices.UpdateDietPlan(dietPlanData, userId);
+      const response = await plansServices.UpdateDietPlan(
+        dietPlanData,
+        userId
+      );
+      console.log("getting res from BE: ", response.data.days)
       if (response instanceof Error) {
-        throw new Error(response.message || "Error updating diet plan");
+        throw new Error(response.errorMessage || "Error updating diet plan");
       }
-
-      const updatedDietPlans = response.data.data.days;
+      const updatedDietPlans = response.data.days
+    
 
       setPlans({
         ...plans,
@@ -84,13 +91,36 @@ export const PlansProvider = ({ children }) => {
         loading: false,
         error: null,
       });
-      return updatedDietPlans;
     } catch (error) {
       console.error("Error updating diet plan:", error);
       setPlans({ ...plans, loading: false, error: error.message });
       return null;
     }
   };
+
+  // const updateDietPlan = async (dietPlanData) => {
+  //   setPlans({ ...plans, loading: true, error: null });
+  //   try {
+  //     const response = await plansServices.UpdateDietPlan(dietPlanData, userId);
+  //     if (response instanceof Error) {
+  //       throw new Error(response.message || "Error updating diet plan");
+  //     }
+
+  //     const updatedDietPlans = response.data.days;
+
+  //     setPlans({
+  //       ...plans,
+  //       dietPlans: updatedDietPlans,
+  //       loading: false,
+  //       error: null,
+  //     });
+  //     return updatedDietPlans;
+  //   } catch (error) {
+  //     console.error("Error updating diet plan:", error);
+  //     setPlans({ ...plans, loading: false, error: error.message });
+  //     return null;
+  //   }
+  // };
 
   const createExercisePlan = async (exerciseData) => {
     setPlans({ ...plans, loading: true, error: null });

@@ -64,11 +64,65 @@ const getDietPlan = AsyncHandler(async (req, res) => {
 
   const dietPlan = user.dietPlans[0]; // Assuming user has only one diet plan
 
-  console.log("get diet plqn called, and this is res: ", dietPlan);
-
   return res
     .status(200)
     .json(new ApiResponse(200, dietPlan, "Diet plan retrieved successfully."));
 });
 
-export { getDietPlan, createDietPlan };
+const updateDietPlan = AsyncHandler(async (req, res) => {
+  const userId = req.params.userId;
+  const dietPlanId = req.body.dietPlanData._id;
+  const { planName = "My Diet Plan", dietPlanData } = req.body;
+
+
+  if (!dietPlanId) {
+    throw new ApiError(400, "Diet plan ID is required for update.");
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new ApiError(404, "User not found.");
+  }
+
+  const existingDietPlan = await DietPlan.findOne({
+    userId,
+  });
+  if (!existingDietPlan) {
+    throw new ApiError(404, "Diet plan not found.");
+  }
+
+  if (existingDietPlan.userId.toString() !== userId) {
+    // Important security check
+    throw new ApiError(403, "You are not authorized to update this diet plan.");
+  }
+
+  const planToUpdate = existingDietPlan.days?.find(
+    (Plan) => Plan._id.toString() === dietPlanId
+  );
+
+  const planToUpdateIndex = existingDietPlan.days.findIndex(
+    (plan) => plan._id.toString() === dietPlanId
+  );
+
+  if (planToUpdateIndex === -1) {
+    throw new ApiError(404, "Specific Diet plan not found for this id.");
+  }
+
+  existingDietPlan.days[dietPlanData.day] = dietPlanData;
+  existingDietPlan.markModified("days");
+
+  const updatedDietPlan = await existingDietPlan.save(); // Save the entire document
+
+  if (!updatedDietPlan) {
+    throw new ApiError(500, "Failed to update diet plan.");
+  }
+
+  // i khow i am returning aenire document, ant its a bad practice,
+  //  i will improve this in future
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedDietPlan, "Diet plan updated."));
+});
+
+export { getDietPlan, createDietPlan, updateDietPlan };

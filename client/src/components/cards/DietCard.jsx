@@ -1,9 +1,11 @@
 import React from "react";
 import dietCardBg from "../../images/diet-card-bg.jpg";
+import { CiEdit } from "react-icons/ci";
+import Button from "../ui/Button";
 
 // dont touch these styles anymore
 
-const DietCard = ({ dietData }) => {
+const DietCard = ({ dietData, editMeal }) => {
   const { day, meals } = dietData;
 
   const dayNames = [
@@ -16,6 +18,10 @@ const DietCard = ({ dietData }) => {
     "Saturday",
   ];
 
+  const handleEditPlan = (dayIndex) => {
+    editMeal(dayIndex);
+  };
+
   return (
     <div
       className="flex justify-center  min-h-full bg-gray-100 rounded-md shadow-sm w-full max-w-full"
@@ -26,10 +32,23 @@ const DietCard = ({ dietData }) => {
         backgroundPosition: "center", // Optional: Control image position
       }}
     >
-      <div className=" py-4 w-full  md:max-w-lg bg-white/50 px-4">
-        <h2 className="text-lg font-bold mb-1 text-gradient-2 ">
-          {dayNames[day]}
-        </h2>
+      <div className=" py-4 w-full  md:max-w-lg px-4">
+        <div className="flex justify-between">
+          <div className="w-full">
+            <h2 className="text-lg font-bold mb-1 text-gradient-2 ">
+              {dayNames[day]}
+            </h2>
+          </div>
+          <span>
+            <button
+              onClick={() => handleEditPlan(day)}
+              
+              className="m-2 p-2 bg-gray-200 rounded hover:bg-gray-300 "
+            >
+              {<CiEdit />}
+            </button>
+          </span>
+        </div>
         <div className="flex items-center  mb-2">
           <div className="flex-grow border-t border-gray-100"></div>
         </div>

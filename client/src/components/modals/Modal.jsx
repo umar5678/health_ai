@@ -11,7 +11,7 @@ const Modal = ({ isOpen, onClose, children, title, width }) => {
     }
 
     return () => {
-      document.body.style.overfolw = "";
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -19,26 +19,30 @@ const Modal = ({ isOpen, onClose, children, title, width }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900 bg-opacity-50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/10 bg-opacity-50 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           {/* Modal Content */}
           <motion.div
-            className={`bg-white dark:bg-gray-7 rounded-lg p-6 w-full shadow-lg mx-2 ${width}`}
+            className={`bg-white rounded-lg py-4 md:py-6 px-4 sm:px-6 w-full shadow-lg mx-2 overflow-y-auto max-h-[90vh] ${width}`} // Added max-h and overflow-y
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 50, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              {" "}
+              {/* Removed overflow-scroll here */}
+              <h2 className="text-lg font-bold text-gray-900">
+                {" "}
+                {/* Removed dark:text class */}
                 {title || "Modal Title"}
               </h2>
               <button
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                className="text-gray-500 hover:text-gray-700" // Removed dark:text classes
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

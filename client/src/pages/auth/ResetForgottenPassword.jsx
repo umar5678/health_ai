@@ -82,6 +82,7 @@ const ResetForgottenPassword = () => {
           <Input
             label="Password: "
             type={showPassword ? "text" : "password"}
+            inputClasses="p-2 mt-2"
             placeholder="Enter your password"
             {...register("password", {
               required: "Password is required",
@@ -98,6 +99,7 @@ const ResetForgottenPassword = () => {
           <Input
             label="Confirm Password: "
             type={showPassword ? "text" : "password"}
+            inputClasses="p-2 mt-2"
             placeholder="Enter your password"
             {...register("confirmPassword", {
               required: "Password is required",

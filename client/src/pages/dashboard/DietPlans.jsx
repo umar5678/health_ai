@@ -12,6 +12,7 @@ import {
 import { generateAiDietPlan } from "../../services/aiServices";
 import domtoimage from "dom-to-image";
 import html2pdf from "html2pdf.js";
+import DietModal from "../../components/modals/DietModal";
 
 const DietPlans = () => {
   const { user } = useAuth();
@@ -23,9 +24,11 @@ const DietPlans = () => {
   const [loading, setLoading] = useState(false);
   const [aiDietPlan, setAiDietplan] = useState([]);
   const [promptMsg, setPromptMsg] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editMode, setEditMode] = useState(null); // Track which plan is being edited
   const [editedPlanData, setEditedPlanData] = useState([]); // Store edited data
   const contentRef = useRef(null);
+  const [toBeEdited, setToBeEdited] = useState({});
 
   const downloadPDF = async () => {
     const element = document.getElementById("content-to-download");
@@ -81,31 +84,6 @@ const DietPlans = () => {
       setError("Failed to save/update diet plan data");
       setLoading(false);
     } finally {
-      setLoading(false)
-    }
-  };
-
-  const handleEditPlan = (plan) => {
-    setEditMode(plan._id); // Set the plan's _id to editMode
-    setEditedPlanData(plan); // Initialize edited data with the current plan data
-  };
-
-  const handleEditInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedPlanData({ ...editedPlanData, [name]: value });
-  };
-
-  const handleUpdatePlan = async (planId) => {
-    try {
-      setLoading(true);
-      const updatedPlan = await updateDietPlan(editedPlanData); //editedPlanData, updateDietPlan, user?._id
-      if (updatedPlan) {
-        setEditMode(null); // Reset edit mode after successful update
-        setEditedPlanData({}); // Clear edited data
-      }
-      setLoading(false);
-    } catch (error) {
-      setError("Failed to update diet plan");
       setLoading(false);
     }
   };
@@ -123,6 +101,23 @@ const DietPlans = () => {
     } catch (error) {
       setLoading(false);
       setError(error?.message || "Diet plan generate Error");
+    }
+  };
+
+  const handleEditMealPlan = (index) => {
+    setToBeEdited({ ...plans.dietPlans.filter((meal) => meal.day === index) });
+
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateSumbit = async (data) => {
+    setLoading(true);
+    try {
+      await updateDietPlan(data);
+    } catch (error) {
+      console.error("update Error: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -163,17 +158,29 @@ const DietPlans = () => {
         </div>
       )}
 
+      <DietModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialData={toBeEdited}
+        onSubmit={handleUpdateSumbit}
+      />
+
       {!aiDietPlan.length > 0 && (
         <div id="content-to-download" className=" max-w-full">
           <Divider />
           <div ref={contentRef} className="max-w-7xl mx-auto">
             <Button onClick={downloadPDF}>Download PDF</Button>
             <h1 className="text-2xl font-bold">Your Diet Plan</h1>
-            <div className="flex flex-wrap gap-4 md:justify-start justify-center mt-4 ">
-              {Array.isArray(plans?.dietPlans) && plans.dietPlans.length > 0 ? (
-                plans.dietPlans.map((diet) => (
+            <div className="flex flex-wrap gap-5 md:justify-start justify-center mt-4 ">
+              {Array.isArray(plans?.dietPlans) &&
+              plans?.dietPlans?.length > 0 ? (
+                plans?.dietPlans?.map((diet) => (
                   <div key={diet?._id} className="not-md:flex-grow ">
-                    <DietCard key={diet?._id} dietData={diet} />
+                    <DietCard
+                      key={diet?._id}
+                      dietData={diet}
+                      editMeal={handleEditMealPlan}
+                    />
                   </div>
                 ))
               ) : (

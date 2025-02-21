@@ -186,28 +186,28 @@ const ProfileForm = ({ onEditComplete }) => {
             label="Height (cm)"
             name="height"
             type="number"
+            inputClasses="p-2 mt-2"
             value={profileData.height}
             onChange={handleChange}
             required
-            inputClasses="py-1"
           />
           <Input
             required
+            inputClasses="p-2 mt-2"
             label="Weight (kg)"
             name="weight"
             type="number"
             value={profileData.weight}
             onChange={handleChange}
-            inputClasses="py-1"
           />
           <Input
             required
+            inputClasses="p-2 mt-2"
             label="Age"
             name="age"
             type="number"
             value={profileData.age}
             onChange={handleChange}
-            inputClasses="py-1"
           />
         </div>
 

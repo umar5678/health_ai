@@ -59,6 +59,7 @@ const LoginForm = () => {
             <Input
               label="Email: "
               placeholder="Enter your email"
+              inputClasses="p-2 mt-2"
               type="email"
               {...register("email", {
                 required: "Email is required",
@@ -89,6 +90,7 @@ const LoginForm = () => {
               <Input
                 label="Password: "
                 type={showPassword ? "text" : "password"}
+                inputClasses="p-2 mt-2"
                 placeholder="Enter your password"
                 {...register("password", {
                   required: "Password is required",

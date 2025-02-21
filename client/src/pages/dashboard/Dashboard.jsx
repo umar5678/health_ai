@@ -12,7 +12,6 @@ const Dashboard = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const { user } = useAuth();
-  console.log("user in dashboard", user);
 
   return (
     <div>

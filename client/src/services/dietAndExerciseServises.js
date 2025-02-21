@@ -39,7 +39,7 @@ class PlansServices {
     // Add dietPlanData and userId as parameters
     const apiRequest = new ApiRequest(`${this.USER_DIET_URL}`);
     const response = await apiRequest.putRequest(`/${userId}`, {
-      days: dietPlanData,
+       dietPlanData,
     }); // Use PUT for updates
 
     return this.handleResponse(response);

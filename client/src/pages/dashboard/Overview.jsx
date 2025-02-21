@@ -40,7 +40,6 @@ const Overview = () => {
 
   const location = useLocation();
 
-  console.log(user);
 
   if (!user?.isProfileSetupDone) {
     return (

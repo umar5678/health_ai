@@ -15,9 +15,9 @@ const ExerciseCard = ({ exerciseData }) => {
 
   return (
     <div
-      className=" min-h-full w-full max-w-full rounded-md shadow-sm" // Full width on small screens, max width on larger screens
+      className=" min-h-full w-full max-w-lg rounded-md shadow-sm"
       style={{
-        backgroundImage: `url(https://t4.ftcdn.net/jpg/01/46/91/15/360_F_146911524_hiyuWatjjoO3scF3sBOvAl8aKO3qPadw.jpg)`, // Example image URL
+        backgroundImage: `url(https://t4.ftcdn.net/jpg/01/46/91/15/360_F_146911524_hiyuWatjjoO3scF3sBOvAl8aKO3qPadw.jpg)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

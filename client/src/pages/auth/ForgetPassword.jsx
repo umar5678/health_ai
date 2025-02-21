@@ -42,8 +42,7 @@ const ForgetPassword = () => {
         )}
 
         {success ? (
-          <div
-            className="mt-32 md:max-w-md px-2 mx-auto text-center">
+          <div className="mt-32 md:max-w-md px-2 mx-auto text-center">
             <p>
               We sent you an email to reset your password, Please check your
               inbox
@@ -69,6 +68,7 @@ const ForgetPassword = () => {
               <Input
                 label="Email"
                 type="email"
+                inputClasses="p-2 mt-2"
                 required
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}

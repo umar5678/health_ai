@@ -85,6 +85,7 @@ const SignupForm = () => {
                 <Input
                   label="Full Name: "
                   placeholder="Enter your full name"
+                  inputClasses="p-2 mt-2"
                   type="text"
                   {...register("fullName", {
                     required: "Full Name is required",
@@ -104,6 +105,7 @@ const SignupForm = () => {
                 <Input
                   label="Email: "
                   placeholder="Enter your email"
+                  inputClasses="p-2 mt-2"
                   type="email"
                   {...register("email", {
                     required: "Email is required",
@@ -133,6 +135,7 @@ const SignupForm = () => {
                   <Input
                     label="Password: "
                     type={showPassword ? "text" : "password"}
+                    inputClasses="p-2 mt-2"
                     placeholder="Enter your password"
                     {...register("password", {
                       required: "Password is required",
