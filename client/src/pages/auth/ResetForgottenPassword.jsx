@@ -80,6 +80,7 @@ const ResetForgottenPassword = () => {
           </div>
 
           <Input
+            autoComplete="on"
             label="Password: "
             type={showPassword ? "text" : "password"}
             inputClasses="p-2 mt-2"
@@ -97,6 +98,7 @@ const ResetForgottenPassword = () => {
           )}
 
           <Input
+            autoComplete="on"
             label="Confirm Password: "
             type={showPassword ? "text" : "password"}
             inputClasses="p-2 mt-2"

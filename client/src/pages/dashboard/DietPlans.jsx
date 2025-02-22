@@ -8,11 +8,11 @@ import {
   LoadingScreen,
   DietCard,
   Divider,
+  DietModal,
 } from "../../components";
 import { generateAiDietPlan } from "../../services/aiServices";
 import domtoimage from "dom-to-image";
 import html2pdf from "html2pdf.js";
-import DietModal from "../../components/modals/DietModal";
 
 const DietPlans = () => {
   const { user } = useAuth();

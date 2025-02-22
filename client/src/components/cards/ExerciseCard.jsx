@@ -1,6 +1,8 @@
 import React from "react";
+import { CiEdit } from "react-icons/ci";
 
-const ExerciseCard = ({ exerciseData }) => {
+
+const ExerciseCard = ({ exerciseData, editExercise }) => {
   const { day, exercise, setsAndVariation } = exerciseData;
 
   const dayNames = [
@@ -13,6 +15,10 @@ const ExerciseCard = ({ exerciseData }) => {
     "Saturday",
   ];
 
+  const handleEditExercise = (dayIndex) => {
+    editExercise(dayIndex);
+  };
+
   return (
     <div
       className=" min-h-full w-full max-w-lg rounded-md shadow-sm"
@@ -24,9 +30,22 @@ const ExerciseCard = ({ exerciseData }) => {
     >
       {/* Optional overlay */}
       <div className="p-4 z-10 w-full">
-        <h2 className="text-xl font-bold mb-4 text-gradient-2">
-          {dayNames[day]}
-        </h2>
+        <div className="flex justify-between">
+          <div className="w-full">
+            <h2 className="text-xl font-bold mb-4 text-gradient-2">
+              {dayNames[day]}
+            </h2>
+          </div>
+
+          <span>
+            <button
+              onClick={() => handleEditExercise(day)}
+              className="m-2 p-2 bg-gray-200 rounded hover:bg-gray-300 "
+            >
+              {<CiEdit />}
+            </button>
+          </span>
+        </div>
         <h3 className="font-bold text-stone-900">{exercise}</h3>
         <div>
           <ul className="font-thin text-stone-800">

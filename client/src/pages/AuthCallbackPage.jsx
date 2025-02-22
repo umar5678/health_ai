@@ -7,7 +7,7 @@ import { interceptedApi } from "../api/api";
 const AuthCallbackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { setAuth } = useAuth();
+  const { setUser, setUserId } = useAuth();
 
   useEffect(() => {
     const handleAuth = async () => {
@@ -16,14 +16,10 @@ const AuthCallbackPage = () => {
 
         if (accessToken) {
           sessionStorage.setItem("accessToken", accessToken);
+
           const decodedToken = jwtDecode(accessToken);
 
-          setAuth((prevAuth) => ({
-            ...prevAuth,
-            isLoggedIn: true,
-            userId: decodedToken.sub || decodedToken._id, // Use sub or _id based on your token structure
-            loading: false,
-          }));
+          setUserId(decodedToken._id);
 
           // Fetch user data after successful login
           const response = await interceptedApi.get(
@@ -31,36 +27,25 @@ const AuthCallbackPage = () => {
           ); // Use sub or _id
           const receivedUser = response.data?.data?.user;
           if (receivedUser) {
-            setAuth((prevAuth) => ({
-              ...prevAuth,
-              userData: receivedUser,
-            }));
+            setUser(receivedUser);
           }
 
           navigate("/dashboard/overview");
         } else {
-          setAuth((prevAuth) => ({
-            ...prevAuth,
-            loading: false,
-            isLoggedIn: false,
-            error: "No token provided.",
-          }));
+          setUser(null);
+          setUserId(null);
           navigate("/login");
         }
       } catch (error) {
         console.error("Authentication error:", error);
-        setAuth((prevAuth) => ({
-          ...prevAuth,
-          loading: false,
-          isLoggedIn: false,
-          error: "Authentication failed. Please try again.",
-        }));
+        setUser(null);
+        setUserId(null);
         navigate("/login");
       }
     };
 
     handleAuth();
-  }, [searchParams, navigate, setAuth]);
+  }, [searchParams, navigate, setUserId, setUser]);
 
   return <p>Processing login...</p>;
 };

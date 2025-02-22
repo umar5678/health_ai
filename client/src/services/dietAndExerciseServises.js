@@ -66,7 +66,7 @@ class PlansServices {
     // Add exerciseData and userId as parameters
     const apiRequest = new ApiRequest(`${this.USER_EXERCISE_URL}`);
     const response = await apiRequest.putRequest(`/${userId}`, {
-      days: exerciseData,
+      exerciseData,
     }); // Use PUT for updates
 
     return this.handleResponse(response);

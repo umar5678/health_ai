@@ -5,6 +5,7 @@ import {
   ErrorMessage,
   ExerciseCard,
   LoadingScreen,
+  ExerciseModal,
 } from "../../components";
 // import { createExerciseRoutine } from "../../services/dietAndExerciseServises";
 import { useAuth } from "../../context/AuthContext";
@@ -17,12 +18,14 @@ const ExerciseRoutine = () => {
   const { plans, createExercisePlan, updateExercisePlan } = usePlans();
   const bio = generateUserBio(user); // Pass user to generateUserBio
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [aiExerciseRoutine, setAiExerciseRoutine] = useState([]);
   const [promptMsg, setPromptMsg] = useState("");
   const [editMode, setEditMode] = useState(null); // Track which plan is being edited
   const [editedExerciseData, setEditedExerciseData] = useState([]); // Store edited data
+  const [toBeEdited, setToBeEdited] = useState({});
 
   const handleSaveExerciseRoutine = async () => {
     try {
@@ -38,10 +41,8 @@ const ExerciseRoutine = () => {
           setLoading(false);
         }
       } else {
-        const newPlan = await createExercisePlan(aiExerciseRoutine);
-        if (newPlan) {
-          setAiExerciseRoutine([]);
-        }
+        await createExercisePlan(aiExerciseRoutine);
+        setAiExerciseRoutine([]);
       }
     } catch (error) {
       setError("Failed to save routine data");
@@ -62,6 +63,25 @@ const ExerciseRoutine = () => {
     } catch (error) {
       setLoading(false);
       setError(error?.message || "Error during generating Exercise Routine");
+    }
+  };
+
+  const handleEditExercisePlan = (index) => {
+    setToBeEdited({
+      ...plans.exerciseRoutines.filter((exercise) => exercise.day === index),
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await updateExercisePlan(data);
+    } catch (error) {
+      console.error("update Error: ", error);
+      setError("Update error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -105,6 +125,14 @@ const ExerciseRoutine = () => {
             </div>
           </div>
         )}
+
+        <ExerciseModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          initialData={toBeEdited}
+          onSubmit={handleUpdateSubmit}
+        />
+
         {!aiExerciseRoutine?.length && (
           <div className="max-w-7xl mx-auto ">
             {/* Centered content */}
@@ -115,7 +143,10 @@ const ExerciseRoutine = () => {
               plans?.exerciseRoutines?.length > 0 ? (
                 plans?.exerciseRoutines?.map((exercise) => (
                   <div key={exercise?._id} className="flex-grow md:w-sm">
-                    <ExerciseCard exerciseData={exercise} />
+                    <ExerciseCard
+                      exerciseData={exercise}
+                      editExercise={handleEditExercisePlan}
+                    />
                   </div>
                 ))
               ) : (

@@ -88,6 +88,7 @@ const LoginForm = () => {
                 )}
               </div>
               <Input
+                autoComplete="on"
                 label="Password: "
                 type={showPassword ? "text" : "password"}
                 inputClasses="p-2 mt-2"

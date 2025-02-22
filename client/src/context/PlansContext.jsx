@@ -19,8 +19,7 @@ export const PlansProvider = ({ children }) => {
       try {
         const exerciseData = await plansServices.GetExercisePlan(userId);
         const dietData = await plansServices.GetDietPlan(userId);
-        console.log("diet :", dietData)
-        console.log("exercise:", exerciseData)
+
         if (exerciseData instanceof Error || dietData instanceof Error) {
           throw new Error(
             exerciseData.errorMessage ||
@@ -59,7 +58,7 @@ export const PlansProvider = ({ children }) => {
       const newDietPlan = response.data.days;
       setPlans({
         ...plans,
-        dietPlans: [...plans.dietPlans, newDietPlan], // Add the new plan
+        dietPlans: newDietPlan, // Add the new plan
         loading: false,
         error: null,
       });
@@ -74,16 +73,11 @@ export const PlansProvider = ({ children }) => {
   const updateDietPlan = async (dietPlanData) => {
     setPlans({ ...plans, loading: true, error: null });
     try {
-      const response = await plansServices.UpdateDietPlan(
-        dietPlanData,
-        userId
-      );
-      console.log("getting res from BE: ", response.data.days)
+      const response = await plansServices.UpdateDietPlan(dietPlanData, userId);
       if (response instanceof Error) {
         throw new Error(response.errorMessage || "Error updating diet plan");
       }
-      const updatedDietPlans = response.data.days
-    
+      const updatedDietPlans = response.data.days;
 
       setPlans({
         ...plans,
@@ -98,30 +92,6 @@ export const PlansProvider = ({ children }) => {
     }
   };
 
-  // const updateDietPlan = async (dietPlanData) => {
-  //   setPlans({ ...plans, loading: true, error: null });
-  //   try {
-  //     const response = await plansServices.UpdateDietPlan(dietPlanData, userId);
-  //     if (response instanceof Error) {
-  //       throw new Error(response.message || "Error updating diet plan");
-  //     }
-
-  //     const updatedDietPlans = response.data.days;
-
-  //     setPlans({
-  //       ...plans,
-  //       dietPlans: updatedDietPlans,
-  //       loading: false,
-  //       error: null,
-  //     });
-  //     return updatedDietPlans;
-  //   } catch (error) {
-  //     console.error("Error updating diet plan:", error);
-  //     setPlans({ ...plans, loading: false, error: error.message });
-  //     return null;
-  //   }
-  // };
-
   const createExercisePlan = async (exerciseData) => {
     setPlans({ ...plans, loading: true, error: null });
     try {
@@ -134,14 +104,14 @@ export const PlansProvider = ({ children }) => {
           newExercisePlan.message || "Error creating exercise plan"
         );
       }
-      const newExercisePlan = response.data.days;
+      console.log(response);
+      const newExercisePlan = response.data.savedRoutine.days;
       setPlans({
         ...plans,
-        exerciseRoutines: [...plans.exerciseRoutines, newExercisePlan],
+        exerciseRoutines: newExercisePlan,
         loading: false,
         error: null,
       });
-      return newExercisePlan;
     } catch (error) {
       console.error("Error creating exercise plan:", error);
       setPlans({ ...plans, loading: false, error: error.message });

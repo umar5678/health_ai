@@ -8,19 +8,19 @@ const Footer = () => {
       label: "Resources",
       items: [
         {
-          href: "javascript:void()",
+          href: "#",
           name: "contact",
         },
         {
-          href: "javascript:void()",
+          href: "#",
           name: "Support",
         },
         {
-          href: "javascript:void()",
+          href: "#",
           name: "Documentation",
         },
         {
-          href: "javascript:void()",
+          href: "#",
           name: "Pricing",
         },
       ],
@@ -29,19 +29,19 @@ const Footer = () => {
       label: "About",
       items: [
         {
-          href: "javascript:void()",
+          href: "#",
           name: "Terms",
         },
         {
-          href: "javascript:void()",
+          href: "#",
           name: "License",
         },
         {
-          href: "javascript:void()",
+          href: "#",
           name: "Privacy",
         },
         {
-          href: "javascript:void()",
+          href: "#",
           name: "About US",
         },
       ],
@@ -99,19 +99,19 @@ const Footer = () => {
         <div className="mt-10 py-10 border-t items-center justify-between sm:flex">
           <p className="text-gray-600">© 2025. All rights reserved.</p>
           <div className="flex items-center gap-x-6 text-gray-700 text-xl mt-0">
-            <a href="javascript:void()">
+            <a href="#">
               {/* facebook */}
               <MdFacebook />
             </a>
-            <a href="javascript:void()">
+            <a href="#">
               {/* twitter */}
               <FaTwitter />
             </a>
-            <a href="javascript:void()">
+            <a href="#">
               {/* insta */}
               <FaInstagram />
             </a>
-            <a href="javascript:void()">
+            <a href="#">
               {/* youtube */}
               <FaYoutube />
             </a>
