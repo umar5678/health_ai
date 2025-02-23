@@ -9,7 +9,7 @@ import {
   TodaysDietCard,
 } from "../../components";
 import { Navigate, useLocation } from "react-router-dom";
-// import { usePlans } from "../../context/PlansContext";
+import { usePlans } from "../../context/PlansContext";
 
 const days = [
   "Sunday",
@@ -23,20 +23,20 @@ const days = [
 
 const Overview = () => {
   const { user } = useAuth();
-  // const { plans, setPlans } = usePlans();
+  const { plans } = usePlans();
 
   const dayIndex = new Date(Date.now()).getDay();
 
   const dayToday = days[dayIndex];
 
-  // const TodaysExrciseRoutine = plans?.exerciseRoutines?.filter(
-  //   (routine) => routine.day === dayIndex
-  // );
+  const TodaysExrciseRoutine = plans?.exerciseRoutines?.filter(
+    (routine) => routine.day === dayIndex
+  );
 
-  // const TodaysDietPlan = plans?.dietPlans?.filter(
-  //   (plan) => plan.day === dayIndex
-  // );
-  // console.log(TodaysDietPlan[0]);
+  const TodaysDietPlan = plans?.dietPlans?.filter(
+    (plan) => plan.day === dayIndex
+  );
+  console.log(TodaysDietPlan[0]);
 
   const location = useLocation();
 
@@ -65,7 +65,7 @@ const Overview = () => {
         />
       </div>
       <Divider />
-      {/* <div className="flex flex-wrap gap-6 justify-between ">
+      <div className="flex flex-wrap gap-6 justify-between ">
         <div>
           {TodaysDietPlan[0] ? (
             <>
@@ -91,7 +91,7 @@ const Overview = () => {
             </>
           )}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
