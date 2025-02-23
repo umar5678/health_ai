@@ -58,7 +58,7 @@ const sendEmail = async (options) => {
 };
 
 const forgotPasswordMailgenContent = (username, passwordResetUrl) => {
-  console.log("sendEmail called,")
+  console.log("sendEmail called,");
   return {
     body: {
       name: username,
@@ -98,9 +98,59 @@ const emailVerificationMailgenContent = (username, verificationUrl) => {
   };
 };
 
+const contactSupportMailgenContent = (
+  fullName,
+  email,
+  phone,
+  services = [],
+  message
+) => {
+  return {
+    body: {
+      greeting: "Hello Health AI Support Team,",
+      intro: `${fullName} has reached out for support. Below are their details:`,
+
+      table: {
+        data: [
+          {
+            Field: "<strong style='color:'color: #111'>Full Name</strong>",
+            Value: fullName,
+          },
+          {
+            Field: "<strong style='color:'color: #111'>Email</strong>",
+            Value: email,
+          },
+          {
+            Field: "<strong style='color:'color: #111'>Phone</strong>",
+            Value: phone || "Not provided",
+          },
+          {
+            Field: "<strong>Services Interested</strong>",
+            Value: services.length ? services.join(", ") : "Not specified",
+          },
+        ],
+        columns: {
+          customWidth: {
+            Field: "40%",
+            Value: "60%",
+          },
+          customAlignment: {
+            Field: "left",
+            Value: "left",
+          },
+        },
+      },
+
+      outro: `<strong style='color:'color: #111'>Message:</strong> \n\n${
+        message || "No additional message provided."
+      }<br></br> \n\nPlease respond to ${email} as soon as possible.`,
+    },
+  };
+};
 
 export {
   sendEmail,
   forgotPasswordMailgenContent,
   emailVerificationMailgenContent,
+  contactSupportMailgenContent,
 };

@@ -7,11 +7,12 @@ import {
   LoadingScreen,
   ExerciseModal,
 } from "../../components";
-// import { createExerciseRoutine } from "../../services/dietAndExerciseServises";
 import { useAuth } from "../../context/AuthContext";
 import { usePlans } from "../../context/PlansContext";
 import { generateAiExerciseRoutine } from "../../services/aiServices";
 import { generateUserBio } from "../../utils/generateUserBio";
+import domtoimage from "dom-to-image";
+import html2pdf from "html2pdf.js";
 
 const ExerciseRoutine = () => {
   const { user } = useAuth(); // Use user from AuthContext
@@ -26,6 +27,35 @@ const ExerciseRoutine = () => {
   const [editMode, setEditMode] = useState(null); // Track which plan is being edited
   const [editedExerciseData, setEditedExerciseData] = useState([]); // Store edited data
   const [toBeEdited, setToBeEdited] = useState({});
+
+  const downloadPDF = async () => {
+    const element = document.getElementById("content-to-download");
+    try {
+      // Capture the element as a PNG image using dom-to-image
+      const dataUrl = await domtoimage.toPng(element);
+
+      // Create an Image element and set its source to the captured data URL
+      const img = new Image();
+      img.src = dataUrl;
+
+      // When the image is loaded, configure html2pdf settings and save the PDF
+      img.onload = () => {
+        // Define options for html2pdf
+        const options = {
+          margin: [14, 14, 14, 14], // [top, right, bottom, left] margins in mm
+          filename: "download.pdf",
+          image: { type: "png", quality: 1 },
+          html2canvas: { scale: 2 }, // Increase scale for better quality
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        };
+
+        // Use html2pdf with the image as the source
+        html2pdf().set(options).from(img).save();
+      };
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  };
 
   const handleSaveExerciseRoutine = async () => {
     try {
@@ -56,7 +86,6 @@ const ExerciseRoutine = () => {
     setLoading(true);
     try {
       const response = await generateAiExerciseRoutine(promptMsg, bio);
-      console.log(response);
       setAiExerciseRoutine(response);
       setError("");
       setLoading(false);
@@ -134,9 +163,14 @@ const ExerciseRoutine = () => {
         />
 
         {!aiExerciseRoutine?.length && (
-          <div className="max-w-7xl mx-auto ">
+          <div id="content-to-download" className="max-w-7xl mx-auto ">
             {/* Centered content */}
             <Divider className="my-4" />
+            <div className="flex max-w-7xl justify-end">
+              <Button variant="default-outline" onClick={downloadPDF}>
+                Download PDF
+              </Button>
+            </div>
             <h1 className="text-2xl font-bold mb-4">Your Exercise Routine</h1>
             <div className="flex flex-wrap gap-5 md:justify-start justify-center">
               {Array.isArray(plans?.exerciseRoutines) &&

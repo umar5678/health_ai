@@ -2,6 +2,7 @@ import { AsyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ContactUs } from "../models/contactUs.model.js";
+import { sendEmail, contactSupportMailgenContent } from "../utils/mail.js";
 
 const handleContactForm = AsyncHandler(async (req, res) => {
   const { fullName, email, phone, services, message } = req.body;
@@ -21,6 +22,18 @@ const handleContactForm = AsyncHandler(async (req, res) => {
     phone,
     services,
     message,
+  });
+
+  await sendEmail({
+    email: "umarfarooq567800@gmail.com",
+    subject: "Contact Support",
+    mailgenContent: contactSupportMailgenContent(
+      fullName,
+      email,
+      phone,
+      services,
+      message
+    ),
   });
 
   if (!contact) {

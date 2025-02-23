@@ -169,7 +169,10 @@ const DietPlans = () => {
         <div id="content-to-download" className=" max-w-full">
           <Divider />
           <div ref={contentRef} className="max-w-7xl mx-auto">
-            <Button onClick={downloadPDF}>Download PDF</Button>
+            <div className="flex max-w-5xl justify-end">
+            <Button variant="default-outline" onClick={downloadPDF}>Download PDF</Button>
+
+            </div>
             <h1 className="text-2xl font-bold">Your Diet Plan</h1>
             <div className="flex flex-wrap gap-5 md:justify-start justify-center mt-4 ">
               {Array.isArray(plans?.dietPlans) &&

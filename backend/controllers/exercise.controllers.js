@@ -33,7 +33,6 @@ const createExerciseRoutine = AsyncHandler(async (req, res) => {
     exerciseRoutines: [savedRoutine._id], // Replace the array with the new routine ID
   });
 
-  console.log("crest exercise called: ", savedRoutine)
 
   return res
     .status(201)
