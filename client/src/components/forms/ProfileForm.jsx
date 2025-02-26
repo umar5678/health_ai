@@ -122,6 +122,8 @@ const ProfileForm = ({ onEditComplete }) => {
       }
     });
 
+    console.log("formdata: ", formData, "userID", userId);
+
     try {
       const response = isEditing
         ? await userServices.updateUserProfile(formData, userId)

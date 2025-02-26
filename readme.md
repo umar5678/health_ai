@@ -63,7 +63,7 @@ This application aims to empower users to take control of their diet and health.
 4.  **Frontend Setup:**
 
     ```bash
-    cd ../frontend
+    cd client
     npm install  # or yarn install
     ```
 
@@ -72,65 +72,16 @@ This application aims to empower users to take control of their diet and health.
 1.  **Start the backend server:**
 
     ```bash
-    cd ../backend
-    npm start  # or yarn start (if you have a start script defined)
+    cd backend
+    npm run dev  # or yarn start (if you have a start script defined)
     ```
 
 2.  **Start the frontend development server:**
 
     ```bash
-    cd ../frontend
-    npm start  # or yarn start
+    cd frontend
+    npm run dev  # or yarn start
     ```
 
-3.  Open your browser and navigate to `http://localhost:3000` (or the port specified by your React development server) to access the application.
+3.  Open your browser and navigate to `http://localhost:5173` (or the port specified by your React development server) to access the application.
 
-
-## Project Structure
-
-```markdown
-diet-health-monitor/
-├── backend/
-│   ├── models/          # Database models (Mongoose schemas)
-│   ├── routes/          # API routes
-│   ├── server.js        # Main server file
-│   ├── .env             # Environment variables
-│   ├── package.json
-│   └── ...
-├── frontend/
-│   ├── src/
-│   │   ├── components/    # React components
-│   │   ├── App.js         # Main app component
-│   │   ├── index.js       # Entry point
-│   │   ├── ...
-│   ├── public/
-│   ├── package.json
-│   └── ...
-├── .gitignore
-├── README.md
-└── ...
-```
-
-## API Endpoints (Optional)
-
-(Add a table or list of your API endpoints here, including the method, route, and a brief description. This is very helpful for other developers.)
-
-Example:
-
-| Method | Route             | Description                                     |
-| :----- | :---------------- | :---------------------------------------------- |
-| POST   | `/api/users/register` | Registers a new user.                           |
-| POST   | `/api/users/login`  | Logs in an existing user.                        |
-| POST   | `/api/food/analyze` | Analyzes a food image and returns nutrient data. |
-| GET    | `/api/users/profile` | Retrieves the user's profile information.       |
-
-## Contributing (Optional)
-
-(If you want to accept contributions to your project, add a contributing section here.)
-
-## License (Optional)
-
-(Specify the license under which your project is distributed.)
-
-
-Remember to replace the placeholder information (like your GitHub URL, MongoDB connection string, etc.) with your actual project details.  A well-written README is essential for making your project understandable and accessible to others (and even to yourself later!).
