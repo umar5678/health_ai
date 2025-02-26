@@ -67,21 +67,3 @@ This application aims to empower users to take control of their diet and health.
     npm install  # or yarn install
     ```
 
-## Usage
-
-1.  **Start the backend server:**
-
-    ```bash
-    cd backend
-    npm run dev  # or yarn start (if you have a start script defined)
-    ```
-
-2.  **Start the frontend development server:**
-
-    ```bash
-    cd frontend
-    npm run dev  # or yarn start
-    ```
-
-3.  Open your browser and navigate to `http://localhost:5173` (or the port specified by your React development server) to access the application.
-
