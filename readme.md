@@ -38,4 +38,9 @@ This application aims to empower users to take control of their diet and health.
 - **Other:** [Mention any other libraries or tools, e.g., Axios for API calls, React Router for navigation, a state management library like Redux or Context API, bcrypt for password hashing, jsonwebtoken for authentication]
 
 ## Installation
+- go to the server and install dependencies `npm i`
+- go to client and install dependencies: `npm i`
+
+- setup .env , from .env.sample for both ends
+- note (only google smtp is working on backend)
 
