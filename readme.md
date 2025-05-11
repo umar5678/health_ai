@@ -37,12 +37,59 @@ This application aims to empower users to take control of their diet and health.
 - **AI Integration:** [Mention the AI API or library used, e.g., Cloud Vision API, Clarifai, custom model with TensorFlow/PyTorch]
 - **Other:** [Mention any other libraries or tools, e.g., Axios for API calls, React Router for navigation, a state management library like Redux or Context API, bcrypt for password hashing, jsonwebtoken for authentication]
 
-## Installation
-- go to the server and install dependencies `npm i`
-- go to client and install dependencies: `npm i`
 
-- setup .env , from .env.sample for both ends
-- note (only google smtp is working on backend)
-- - then run dev server : `npm run dev` on client
-  - `npm run dev ` on server
+### Opening the Project
+
+1. **Open your preferred code editor.**
+
+2. **Set up the server dependencies:**
+
+   * Navigate to the server directory:
+
+     ```bash
+     cd server
+     ```
+   * Install the required dependencies:
+
+     ```bash
+     npm install
+     ```
+
+3. **Set up the client dependencies:**
+
+   * Go to the client directory:
+
+     ```bash
+     cd ../client
+     ```
+   * Install the required dependencies:
+
+     ```bash
+     npm install
+     ```
+
+4. **Configure environment variables:**
+
+   * Copy the contents of `.env.sample` to create a `.env` file for both the server and client.
+
+5. **Important Note:**
+
+   * **Only Google SMTP is supported** for the backend.
+
+6. **Start the development servers:**
+
+   * For the client, run:
+
+     ```bash
+     npm run dev
+     ```
+   * For the server, run:
+
+     ```bash
+     npm run dev
+     ```
+
+---
+
+
 
