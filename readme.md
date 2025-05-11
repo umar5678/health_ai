@@ -43,4 +43,6 @@ This application aims to empower users to take control of their diet and health.
 
 - setup .env , from .env.sample for both ends
 - note (only google smtp is working on backend)
+- - then run dev server : `npm run dev` on client
+  - `npm run dev ` on server
 
